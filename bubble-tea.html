@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>🧋 奶茶调配助手</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --boba-brown: #5D4037;
+      --cream: #FFF8F0;
+      --caramel: #D4A574;
+      --tea-green: #7CB342;
+      --text-dark: #3E2723;
+      --text-light: #8D6E63;
+      --white: #FFFFFF;
+      --danger: #e53935;
+      --shadow: 0 4px 12px rgba(93, 64, 55, 0.15);
+      --shadow-hover: 0 8px 24px rgba(93, 64, 55, 0.2);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: 'Noto Sans SC', system-ui, sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      min-height: 100vh;
+      max-width: 480px;
+      margin: 0 auto;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* Header */
+    .header {
+      background: var(--white);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 2px solid var(--caramel);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-back { background: none; border: none; font-size: 24px; cursor: pointer; padding: 8px; margin: -8px; border-radius: 8px; transition: background 0.2s; }
+    .header-back:active { background: rgba(93,64,55,0.1); }
+    .header-title { flex: 1; font-weight: 700; font-size: 18px; }
+    .header-subtitle { font-size: 13px; color: var(--text-light); font-weight: 400; }
+    .header-add { background: none; border: none; font-size: 22px; cursor: pointer; padding: 8px; border-radius: 8px; transition: background 0.2s; }
+    .header-add:active { background: rgba(93,64,55,0.1); }
+
+    /* Page */
+    .page { display: none; animation: fadeIn 0.3s ease-out; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+    /* Home Page */
+    .home-page { padding: 20px; }
+    .search-box { background: var(--white); border: 2px solid transparent; border-radius: 12px; padding: 14px 16px; font-size: 16px; font-family: inherit; width: 100%; margin-bottom: 24px; box-shadow: var(--shadow); transition: border-color 0.2s; outline: none; }
+    .search-box:focus { border-color: var(--caramel); }
+    .category { margin-bottom: 28px; }
+    .category-title { font-size: 14px; color: var(--text-light); font-weight: 500; margin-bottom: 12px; padding-left: 4px; }
+    .drink-grid { display: flex; flex-direction: column; gap: 12px; }
+    .drink-card { background: var(--white); border-radius: 16px; padding: 18px 20px; display: flex; align-items: center; gap: 16px; cursor: pointer; box-shadow: var(--shadow); transition: transform 0.15s, box-shadow 0.15s; border: none; width: 100%; text-align: left; font-family: inherit; }
+    .drink-card:active { transform: scale(0.98); box-shadow: var(--shadow-hover); }
+    .drink-card .drink-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .drink-card .edit-btn { background: none; border: none; font-size: 16px; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+    .drink-card .edit-btn:active { background: rgba(93,64,55,0.1); }
+    .drink-card .delete-btn { background: none; border: none; font-size: 16px; cursor: pointer; padding: 4px 8px; border-radius: 6px; color: var(--danger); }
+    .drink-icon { font-size: 36px; flex-shrink: 0; }
+    .drink-info { flex: 1; }
+    .drink-name { font-weight: 700; font-size: 17px; margin-bottom: 4px; }
+    .drink-intro { font-size: 13px; color: var(--text-light); }
+    .drink-arrow { font-size: 20px; color: var(--caramel); }
+    .no-result { text-align: center; padding: 40px 20px; color: var(--text-light); }
+    .footer-status { text-align: center; padding: 24px; font-size: 13px; color: var(--text-light); }
+
+    /* Step Page */
+    .step-page { padding: 20px; }
+    .progress-bar { display: flex; justify-content: center; gap: 8px; margin-bottom: 28px; }
+    .progress-dot { width: 10px; height: 10px; border-radius: 50%; background: #d4c4b7; transition: all 0.3s ease; }
+    .progress-dot.done { background: var(--caramel); width: 8px; height: 8px; }
+    .progress-dot.current { background: var(--boba-brown); width: 14px; height: 14px; }
+    .step-card { background: var(--white); border-radius: 20px; padding: 32px 24px; text-align: center; box-shadow: var(--shadow); margin-bottom: 24px; }
+    .step-icon { font-size: 72px; margin-bottom: 16px; display: block; animation: stepBounce 0.4s ease-out; }
+    @keyframes stepBounce { 0% { transform: scale(0.7); opacity: 0; } 60% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+    .step-number { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--text-light); margin-bottom: 8px; font-weight: 700; }
+    .step-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; color: var(--boba-brown); }
+    .step-desc { font-size: 16px; line-height: 1.7; color: var(--text-dark); text-align: left; background: var(--cream); border-radius: 12px; padding: 16px; min-height: 80px; }
+    .step-image { margin-top: 12px; border-radius: 12px; max-width: 100%; max-height: 200px; object-fit: cover; display: none; }
+    .step-image.visible { display: block; }
+    .speak-indicator { font-size: 13px; color: var(--caramel); margin-bottom: 16px; height: 20px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .speak-indicator.speaking { animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .nav-buttons { display: flex; flex-direction: column; gap: 12px; }
+    .btn-primary { background: var(--boba-brown); color: var(--white); border: none; padding: 18px; border-radius: 14px; font-size: 18px; font-weight: 700; font-family: inherit; cursor: pointer; transition: transform 0.1s, background 0.2s; }
+    .btn-primary:active { transform: scale(0.97); background: #4a3530; }
+    .btn-secondary { background: none; border: 2px solid #d4c4b7; color: var(--text-light); padding: 14px; border-radius: 12px; font-size: 15px; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+    .btn-secondary:active { background: rgba(93,64,55,0.05); }
+    .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Complete Page */
+    .complete-page { padding: 60px 24px; text-align: center; }
+    .complete-icon { font-size: 100px; margin-bottom: 24px; animation: bounce 0.6s ease-out; }
+    @keyframes bounce { 0% { transform: scale(0); } 60% { transform: scale(1.2); } 100% { transform: scale(1); } }
+    .complete-title { font-size: 28px; font-weight: 700; color: var(--boba-brown); margin-bottom: 12px; }
+    .complete-subtitle { font-size: 16px; color: var(--text-light); margin-bottom: 40px; }
+    .complete-buttons { display: flex; flex-direction: column; gap: 12px; }
+    .btn-complete { background: var(--boba-brown); color: var(--white); border: none; padding: 16px; border-radius: 14px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; transition: transform 0.1s; }
+    .btn-complete:active { transform: scale(0.97); }
+    .btn-outline { background: none; border: 2px solid var(--caramel); color: var(--boba-brown); padding: 14px; border-radius: 14px; font-size: 15px; font-weight: 500; font-family: inherit; cursor: pointer; }
+
+    /* Add/Edit Page */
+    .edit-page { padding: 20px; }
+    .edit-section { background: var(--white); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .edit-section-title { font-weight: 700; font-size: 16px; margin-bottom: 16px; color: var(--boba-brown); display: flex; align-items: center; justify-content: space-between; }
+    .edit-label { font-size: 13px; color: var(--text-light); font-weight: 500; margin-bottom: 6px; }
+    .edit-input { background: var(--cream); border: 2px solid transparent; border-radius: 10px; padding: 12px 14px; font-size: 15px; font-family: inherit; width: 100%; margin-bottom: 12px; outline: none; transition: border-color 0.2s; }
+    .edit-input:focus { border-color: var(--caramel); }
+    .edit-input-row { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
+    .edit-input-row .edit-input { margin-bottom: 0; flex: 1; }
+    .step-edit-card { background: var(--cream); border-radius: 12px; padding: 16px; margin-bottom: 12px; position: relative; }
+    .step-edit-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .step-edit-num { font-weight: 700; color: var(--boba-brown); font-size: 14px; }
+    .step-edit-delete { background: none; border: none; color: var(--danger); font-size: 13px; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+    .step-edit-delete:active { background: rgba(229,57,53,0.1); }
+    .img-upload-box { border: 2px dashed #d4c4b7; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; margin-top: 8px; transition: border-color 0.2s; position: relative; }
+    .img-upload-box:hover { border-color: var(--caramel); }
+    .img-upload-box input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .img-upload-preview { max-width: 100%; max-height: 150px; border-radius: 8px; margin-top: 8px; display: none; }
+    .img-upload-preview.visible { display: block; }
+    .img-upload-hint { font-size: 13px; color: var(--text-light); }
+    .img-remove-btn { background: var(--danger); color: white; border: none; border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer; margin-top: 6px; display: none; }
+    .img-remove-btn.visible { display: inline-block; }
+    .icon-picker { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .icon-option { font-size: 28px; padding: 8px; border-radius: 10px; border: 2px solid transparent; cursor: pointer; transition: all 0.15s; }
+    .icon-option:hover { background: var(--cream); }
+    .icon-option.selected { border-color: var(--caramel); background: rgba(212,165,116,0.15); }
+    .btn-add-step { width: 100%; background: none; border: 2px dashed #d4c4b7; color: var(--text-light); padding: 14px; border-radius: 12px; font-size: 15px; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+    .btn-add-step:active { background: rgba(93,64,55,0.05); }
+    .btn-save { width: 100%; background: var(--boba-brown); color: var(--white); border: none; padding: 16px; border-radius: 14px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; margin-top: 8px; }
+    .btn-save:active { background: #4a3530; }
+    .btn-cancel { width: 100%; background: none; border: 2px solid #d4c4b7; color: var(--text-light); padding: 14px; border-radius: 14px; font-size: 15px; font-family: inherit; cursor: pointer; margin-top: 10px; }
+    .empty-steps { text-align: center; padding: 24px; color: var(--text-light); font-size: 14px; }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--boba-brown); color: var(--white); padding: 12px 24px; border-radius: 24px; font-size: 14px; opacity: 0; transition: all 0.3s ease; pointer-events: none; z-index: 200; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* Confirm dialog */
+    .confirm-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .confirm-overlay.active { display: flex; }
+    .confirm-box { background: var(--white); border-radius: 16px; padding: 24px; max-width: 320px; width: 100%; text-align: center; }
+    .confirm-title { font-weight: 700; font-size: 17px; margin-bottom: 8px; }
+    .confirm-msg { font-size: 14px; color: var(--text-light); margin-bottom: 20px; }
+    .confirm-btns { display: flex; gap: 10px; }
+    .confirm-yes { flex: 1; background: var(--danger); color: white; border: none; padding: 12px; border-radius: 10px; font-size: 15px; font-weight: 500; font-family: inherit; cursor: pointer; }
+    .confirm-no { flex: 1; background: var(--cream); color: var(--text-dark); border: none; padding: 12px; border-radius: 10px; font-size: 15px; font-family: inherit; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<header class="header" id="header">
+  <button class="header-back" id="backBtn" style="display:none;">←</button>
+  <div>
+    <div class="header-title" id="headerTitle">🧋 奶茶调配助手</div>
+    <div class="header-subtitle" id="headerSubtitle"></div>
+  </div>
+  <button class="header-add" id="addBtn" onclick="showAddPage()">＋</button>
+</header>
+
+<!-- Home Page -->
+<div class="page active" id="homePage">
+  <div class="home-page">
+    <input type="text" class="search-box" id="searchInput" placeholder="🔍 搜索饮品...">
+    <div id="drinkList"></div>
+    <div class="footer-status">已收录 <span id="drinkCount">0</span> 款饮品配方</div>
+  </div>
+</div>
+
+<!-- Step Page -->
+<div class="page" id="stepPage">
+  <div class="step-page">
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="step-card">
+      <span class="step-icon" id="stepIcon">🍵</span>
+      <div class="step-number" id="stepNumber">第 1 步</div>
+      <div class="step-title" id="stepTitle">步骤标题</div>
+      <div class="step-desc" id="stepDesc">步骤描述</div>
+      <img class="step-image" id="stepImage" src="" alt="">
+    </div>
+    <div class="speak-indicator" id="speakIndicator">🔊 即将朗读...</div>
+    <div class="nav-buttons">
+      <button class="btn-primary" id="nextBtn" onclick="nextStep()">下一步 →</button>
+      <button class="btn-secondary" id="prevBtn" onclick="prevStep()" disabled>⏮ 上一步</button>
+    </div>
+  </div>
+</div>
+
+<!-- Complete Page -->
+<div class="page" id="completePage">
+  <div class="complete-page">
+    <div class="complete-icon">🎉</div>
+    <div class="complete-title">制作完成！</div>
+    <div class="complete-subtitle" id="completeSubtitle">珍珠奶茶 已完成</div>
+    <div class="complete-buttons">
+      <button class="btn-complete" onclick="restartDrink()">🔄 再做一杯</button>
+      <button class="btn-outline" onclick="goHome()">🏠 返回首页</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Page -->
+<div class="page" id="editPage">
+  <div class="edit-page">
+    <div class="edit-section">
+      <div class="edit-section-title">🍵 饮品信息</div>
+      <div class="edit-label">饮品名称 *</div>
+      <input type="text" class="edit-input" id="editName" placeholder="例如：珍珠奶茶">
+      <div class="edit-label">简介</div>
+      <input type="text" class="edit-input" id="editIntro" placeholder="例如：最经典的国民饮品">
+      <div class="edit-label">分类</div>
+      <input type="text" class="edit-input" id="editCategory" placeholder="例如：经典奶茶">
+      <div class="edit-label">选择图标</div>
+      <div class="icon-picker" id="iconPicker"></div>
+    </div>
+
+    <div class="edit-section">
+      <div class="edit-section-title">📝 调制步骤 <span id="stepCount" style="font-weight:400;color:var(--text-light);font-size:13px;"></span></div>
+      <div id="stepEditList"></div>
+      <button class="btn-add-step" id="addStepBtn" onclick="addStep()">＋ 添加步骤</button>
+    </div>
+
+    <button class="btn-save" id="saveBtn" onclick="saveDrink()">💾 保存饮品</button>
+    <button class="btn-cancel" onclick="cancelEdit()">取消</button>
+  </div>
+</div>
+
+<!-- Confirm Dialog -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <div class="confirm-title" id="confirmTitle">确认删除？</div>
+    <div class="confirm-msg" id="confirmMsg">删除后无法恢复。</div>
+    <div class="confirm-btns">
+      <button class="confirm-no" onclick="confirmNo()">取消</button>
+      <button class="confirm-yes" id="confirmYes" onclick="confirmYes()">删除</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ====== Default Data ======
+const DEFAULT_DRINKS = [
+  {
+    id: "pearl-milk-tea",
+    name: "珍珠奶茶",
+    category: "经典奶茶",
+    intro: "最经典的国民饮品",
+    icon: "🧋",
+    steps: [
+      { icon: "🍵", title: "加入茶汤", desc: "将 300ml 茉莉绿茶倒入 700ml 雪克杯中", image: null },
+      { icon: "🥛", title: "加入奶精", desc: "倒入 30g 奶精粉（2 勺），用少量热水（约50ml）调开后再倒入", image: null },
+      { icon: "🍯", title: "加入糖浆", desc: "加入 30ml 果糖糖浆（约 2 勺），可根据口味调整", image: null },
+      { icon: "🧊", title: "加入冰块", desc: "加入冰块至 500ml 刻度线（约 8 分满）", image: null },
+      { icon: "🫙", title: "雪克摇晃", desc: "盖紧盖子，用力摇晃 15～20 下，使所有材料充分混合", image: null },
+      { icon: "🧋", title: "加入珍珠", desc: "在出品杯底部加入 80g 煮好的珍珠（大约半勺）", image: null },
+      { icon: "🥤", title: "倒入成品", desc: "将雪克杯中的茶饮倒入装有珍珠的杯中，撕开封口膜，完成！", image: null },
+    ]
+  },
+  {
+    id: "coconut-milk-tea",
+    name: "椰果奶茶",
+    category: "经典奶茶",
+    intro: "Q弹椰果，经典之选",
+    icon: "🧋",
+    steps: [
+      { icon: "🍵", title: "加入茶汤", desc: "将 300ml 茉莉绿茶倒入 700ml 雪克杯中", image: null },
+      { icon: "🥛", title: "加入奶精", desc: "倒入 30g 奶精粉，用少量热水调开后再倒入", image: null },
+      { icon: "🍯", title: "加入糖浆", desc: "加入 25ml 果糖糖浆，可根据口味调整", image: null },
+      { icon: "🧊", title: "加入冰块", desc: "加入冰块至 500ml 刻度线", image: null },
+      { icon: "🫙", title: "雪克摇晃", desc: "盖紧盖子，用力摇晃 15～20 下", image: null },
+      { icon: "🧋", title: "加入椰果", desc: "在出品杯底部加入 60g 椰果果肉", image: null },
+      { icon: "🥤", title: "倒入成品", desc: "将茶饮倒入成品杯中，完成！", image: null },
+    ]
+  },
+  {
+    id: "pudding-milk-tea",
+    name: "布丁奶茶",
+    category: "经典奶茶",
+    intro: "嫩滑布丁，入口即化",
+    icon: "🧋",
+    steps: [
+      { icon: "🍵", title: "加入茶汤", desc: "将 300ml 茉莉绿茶倒入 700ml 雪克杯中", image: null },
+      { icon: "🥛", title: "加入奶精", desc: "倒入 30g 奶精粉，用少量热水调开后再倒入", image: null },
+      { icon: "🍯", title: "加入糖浆", desc: "加入 30ml 果糖糖浆", image: null },
+      { icon: "🧊", title: "加入冰块", desc: "加入冰块至 500ml 刻度线", image: null },
+      { icon: "🫙", title: "雪克摇晃", desc: "盖紧盖子，用力摇晃 15～20 下", image: null },
+      { icon: "🍮", title: "加入布丁", desc: "在出品杯底部加入 80g 布丁（约 2 勺）", image: null },
+      { icon: "🥤", title: "倒入成品", desc: "将茶饮倒入成品杯中，完成！", image: null },
+    ]
+  },
+  {
+    id: "brown-sugar-bubble",
+    name: "黑糖脏脏茶",
+    category: "风味奶茶",
+    intro: "黑糖挂壁，浓郁甜蜜",
+    icon: "🧋",
+    steps: [
+      { icon: "🍯", title: "挂壁黑糖", desc: "在出品杯内壁淋上黑糖糖浆，转动杯子让糖浆挂满杯壁，备用", image: null },
+      { icon: "🧋", title: "加入珍珠", desc: "在杯底加入 80g 煮好的黑糖珍珠", image: null },
+      { icon: "🥛", title: "加入牛奶", desc: "倒入 250ml 鲜牛奶至 7 分满", image: null },
+      { icon: "🍵", title: "加入茶汤", desc: "再加入 150ml 茉莉绿茶", image: null },
+      { icon: "🧊", title: "加入冰块", desc: "加入冰块至满杯", image: null },
+      { icon: "🍯", title: "淋上黑糖", desc: "最后在表面再淋一圈黑糖糖浆，形成虎纹效果，完成！", image: null },
+    ]
+  },
+  {
+    id: "taro-pu'er",
+    name: "芋泥啵啵茶",
+    category: "风味奶茶",
+    intro: "芋泥浓郁，啵啵Q弹",
+    icon: "🧋",
+    steps: [
+      { icon: "🍠", title: "挂壁芋泥", desc: "在出品杯内壁抹上芋泥，形成挂壁效果", image: null },
+      { icon: "🧋", title: "加入珍珠", desc: "在杯底加入 60g 珍珠", image: null },
+      { icon: "🍵", title: "加入茶底", desc: "倒入 200ml 茉莉绿茶 + 100ml 纯牛奶，摇晃均匀后倒入", image: null },
+      { icon: "🍠", title: "加入芋泥", desc: "用勺子舀入 100g 芋泥到杯中，让其自然流淌在茶饮上层", image: null },
+      { icon: "🧊", title: "补冰", desc: "补适量冰块至满杯，完成！", image: null },
+    ]
+  },
+  {
+    id: "matcha-latte",
+    name: "抹茶牛奶",
+    category: "抹茶系列",
+    intro: "日式抹茶，清新回甘",
+    icon: "🍵",
+    steps: [
+      { icon: "🍵", title: "打抹茶粉", desc: "取 4g 抹茶粉放入杯中，加入 30ml 温水（约70°C）", image: null },
+      { icon: "🫧", title: "搅拌抹茶", desc: "用茶筅或小勺快速搅拌，将抹茶彻底打散成糊状，无颗粒", image: null },
+      { icon: "🥛", title: "加入牛奶", desc: "加入 250ml 冰牛奶，可根据个人喜好调整用量", image: null },
+      { icon: "🍯", title: "调味", desc: "加入 15ml 糖浆或蜂蜜，搅拌均匀", image: null },
+      { icon: "🧊", title: "加冰", desc: "加入冰块至满杯，轻轻搅拌下，完成！", image: null },
+    ]
+  },
+  {
+    id: "mango-green",
+    name: "芒果绿妍",
+    category: "鲜果茶",
+    intro: "当季芒果，清爽一夏",
+    icon: "🥭",
+    steps: [
+      { icon: "🥭", title: "处理芒果", desc: "取 150g 新鲜芒果肉，切成约 1cm 的小块", image: null },
+      { icon: "🍵", title: "加入茶底", desc: "将 200ml 茉莉绿茶倒入 500ml 雪克杯中", image: null },
+      { icon: "🍯", title: "加糖浆", desc: "加入 25ml 果糖糖浆", image: null },
+      { icon: "🫙", title: "雪克混合", desc: "盖紧盖子摇晃 10 下，让茶与糖混合", image: null },
+      { icon: "🧊", title: "加入冰块", desc: "加入冰块至 450ml 刻度线", image: null },
+      { icon: "🥭", title: "加入芒果", desc: "将切好的芒果块倒入杯中，用勺子轻压，帮助果肉释放风味", image: null },
+      { icon: "🥤", title: "完成", desc: "插上吸管，轻轻上下抽动几下，让果肉与茶饮混合，完成！", image: null },
+    ]
+  },
+  {
+    id: "lychee-punch",
+    name: "荔枝椰椰",
+    category: "鲜果茶",
+    intro: "荔枝清甜，椰奶丝滑",
+    icon: "🥥",
+    steps: [
+      { icon: "🍇", title: "处理荔枝", desc: "取 6-8 颗去皮去核的荔枝果肉，放入杯底", image: null },
+      { icon: "🥥", title: "加入椰乳", desc: "倒入 150ml 椰奶（或椰浆 50ml + 水 100ml）", image: null },
+      { icon: "🍵", title: "加入茶底", desc: "再加入 150ml 茉莉绿茶", image: null },
+      { icon: "🍯", title: "加糖浆", desc: "加入 20ml 糖浆", image: null },
+      { icon: "🧊", title: "加冰", desc: "加入冰块至满杯", image: null },
+      { icon: "🫙", title: "摇晃混合", desc: "盖盖后轻轻摇晃几下，完成！", image: null },
+    ]
+  }
+];
+
+const ICONS = ["🧋","🍵","🥤","🥛","🍯","🧊","🫙","🍠","🥭","🥥","🍇","🫧","🍮","🍵","🧃","☕","🫖","🥤","🍶","🧉"];
+
+// ====== State ======
+let drinks = [];
+let currentDrink = null;
+let currentStep = 0;
+let isSpeaking = false;
+let editMode = null; // null | 'add' | 'edit'
+let editSteps = [];
+let selectedIcon = "🧋";
+let confirmCallback = null;
+
+// ====== DOM ======
+const homePage = document.getElementById('homePage');
+const stepPage = document.getElementById('stepPage');
+const completePage = document.getElementById('completePage');
+const editPage = document.getElementById('editPage');
+const backBtn = document.getElementById('backBtn');
+const addBtn = document.getElementById('addBtn');
+const headerTitle = document.getElementById('headerTitle');
+const headerSubtitle = document.getElementById('headerSubtitle');
+const searchInput = document.getElementById('searchInput');
+const drinkList = document.getElementById('drinkList');
+const drinkCount = document.getElementById('drinkCount');
+
+// ====== Init ======
+function init() {
+  loadDrinks();
+  renderDrinkList(drinks);
+  drinkCount.textContent = drinks.length;
+  buildIconPicker();
+
+  backBtn.addEventListener('click', () => {
+    if (editPage.classList.contains('active')) {
+      cancelEdit();
+    } else if (stepPage.classList.contains('active') || completePage.classList.contains('active')) {
+      stopSpeaking();
+      goHome();
+    }
+  });
+
+  searchInput.addEventListener('input', (e) => {
+    const q = e.target.value.trim();
+    if (!q) renderDrinkList(drinks);
+    else renderDrinkList(drinks.filter(d => d.name.includes(q) || d.category.includes(q)));
+  });
+}
+
+function loadDrinks() {
+  try {
+    const saved = localStorage.getItem('bubble-tea-drinks');
+    if (saved) {
+      drinks = JSON.parse(saved);
+    } else {
+      drinks = JSON.parse(JSON.stringify(DEFAULT_DRINKS));
+      saveDrinks();
+    }
+  } catch (e) {
+    drinks = JSON.parse(JSON.stringify(DEFAULT_DRINKS));
+  }
+}
+
+function saveDrinks() {
+  localStorage.setItem('bubble-tea-drinks', JSON.stringify(drinks));
+}
+
+// ====== Render Drink List ======
+function renderDrinkList(list) {
+  if (list.length === 0) {
+    drinkList.innerHTML = '<div class="no-result">未找到该饮品 😅</div>';
+    return;
+  }
+  const grouped = {};
+  list.forEach(d => {
+    if (!grouped[d.category]) grouped[d.category] = [];
+    grouped[d.category].push(d);
+  });
+
+  let html = '';
+  Object.keys(grouped).forEach(cat => {
+    html += `<div class="category"><div class="category-title">○ ${cat}</div><div class="drink-grid">`;
+    grouped[cat].forEach(d => {
+      html += `<div class="drink-card">
+        <span class="drink-icon">${d.icon}</span>
+        <div class="drink-info" onclick="selectDrink('${d.id}')">
+          <div class="drink-name">${d.name}</div>
+          <div class="drink-intro">${d.intro || ''}</div>
+        </div>
+        <div class="drink-actions">
+          <button class="edit-btn" onclick="event.stopPropagation();editDrink('${d.id}')" title="编辑">✏️</button>
+          <button class="delete-btn" onclick="event.stopPropagation();deleteDrink('${d.id}')" title="删除">🗑️</button>
+        </div>
+      </div>`;
+    });
+    html += '</div></div>';
+  });
+  drinkList.innerHTML = html;
+}
+
+// ====== Select Drink ======
+function selectDrink(id) {
+  currentDrink = drinks.find(d => d.id === id);
+  if (!currentDrink) return;
+  currentStep = 0;
+  showPage('step');
+  headerTitle.textContent = currentDrink.name;
+  headerSubtitle.textContent = currentDrink.category;
+  backBtn.style.display = 'block';
+  addBtn.style.display = 'none';
+  renderStep();
+  autoSpeak();
+}
+
+// ====== Render Step ======
+function renderStep() {
+  const step = currentDrink.steps[currentStep];
+  const total = currentDrink.steps.length;
+
+  document.getElementById('stepIcon').textContent = step.icon;
+  document.getElementById('stepNumber').textContent = `第 ${currentStep + 1} / ${total} 步`;
+  document.getElementById('stepTitle').textContent = step.title;
+  document.getElementById('stepDesc').textContent = step.desc;
+
+  const img = document.getElementById('stepImage');
+  if (step.image) {
+    img.src = step.image;
+    img.classList.add('visible');
+  } else {
+    img.classList.remove('visible');
+  }
+
+  // Progress dots
+  let dots = '';
+  for (let i = 0; i < total; i++) {
+    let cls = 'progress-dot';
+    if (i < currentStep) cls += ' done';
+    if (i === currentStep) cls += ' current';
+    dots += `<div class="${cls}"></div>`;
+  }
+  document.getElementById('progressBar').innerHTML = dots;
+
+  // Next button
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.textContent = currentStep === total - 1 ? '🎉 完成！' : '下一步 →';
+
+  // Prev button
+  document.getElementById('prevBtn').disabled = currentStep === 0;
+}
+
+// ====== Auto Speak ======
+let autoSpeakTimer = null;
+function autoSpeak() {
+  clearTimeout(autoSpeakTimer);
+  autoSpeakTimer = setTimeout(() => {
+    if (!currentDrink) return;
+    const step = currentDrink.steps[currentStep];
+    const text = `第 ${currentStep + 1} 步：${step.title}。${step.desc}`;
+    speakText(text);
+  }, 600);
+}
+
+function speakText(text) {
+  if (!('speechSynthesis' in window)) return;
+  stopSpeaking();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'zh-CN';
+  utterance.rate = 0.85;
+  utterance.pitch = 1.1;
+  utterance.onstart = () => {
+    isSpeaking = true;
+    const ind = document.getElementById('speakIndicator');
+    ind.textContent = '🔊 朗读中...';
+    ind.classList.add('speaking');
+  };
+  utterance.onend = () => {
+    isSpeaking = false;
+    const ind = document.getElementById('speakIndicator');
+    ind.textContent = '';
+    ind.classList.remove('speaking');
+  };
+  utterance.onerror = () => {
+    isSpeaking = false;
+    const ind = document.getElementById('speakIndicator');
+    ind.textContent = '';
+    ind.classList.remove('speaking');
+  };
+  setTimeout(() => speechSynthesis.speak(utterance), 50);
+}
+
+function stopSpeaking() {
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  isSpeaking = false;
+  const ind = document.getElementById('speakIndicator');
+  if (ind) { ind.textContent = ''; ind.classList.remove('speaking'); }
+}
+
+// ====== Navigation ======
+function nextStep() {
+  stopSpeaking();
+  if (currentStep < currentDrink.steps.length - 1) {
+    currentStep++;
+    renderStep();
+    autoSpeak();
+  } else {
+    showPage('complete');
+    headerTitle.textContent = '🧋 奶茶调配助手';
+    headerSubtitle.textContent = '';
+    backBtn.style.display = 'none';
+    addBtn.style.display = 'block';
+    document.getElementById('completeSubtitle').textContent = `${currentDrink.name} 已完成`;
+  }
+}
+
+function prevStep() {
+  stopSpeaking();
+  if (currentStep > 0) {
+    currentStep--;
+    renderStep();
+    autoSpeak();
+  }
+}
+
+function restartDrink() {
+  if (currentDrink) {
+    stopSpeaking();
+    currentStep = 0;
+    showPage('step');
+    renderStep();
+    headerTitle.textContent = currentDrink.name;
+    headerSubtitle.textContent = currentDrink.category;
+    backBtn.style.display = 'block';
+    addBtn.style.display = 'none';
+    autoSpeak();
+  }
+}
+
+function goHome() {
+  stopSpeaking();
+  showPage('home');
+  headerTitle.textContent = '🧋 奶茶调配助手';
+  headerSubtitle.textContent = '';
+  backBtn.style.display = 'none';
+  addBtn.style.display = 'block';
+  searchInput.value = '';
+  renderDrinkList(drinks);
+}
+
+function showPage(page) {
+  homePage.classList.remove('active');
+  stepPage.classList.remove('active');
+  completePage.classList.remove('active');
+  editPage.classList.remove('active');
+  if (page === 'home') homePage.classList.add('active');
+  else if (page === 'step') stepPage.classList.add('active');
+  else if (page === 'complete') completePage.classList.add('active');
+  else if (page === 'edit') editPage.classList.add('active');
+}
+
+// ====== Icon Picker ======
+function buildIconPicker() {
+  const picker = document.getElementById('iconPicker');
+  picker.innerHTML = ICONS.map(icon => `<div class="icon-option${icon === selectedIcon ? ' selected' : ''}" onclick="selectIcon('${icon}')">${icon}</div>`).join('');
+}
+
+function selectIcon(icon) {
+  selectedIcon = icon;
+  document.querySelectorAll('.icon-option').forEach(el => {
+    el.classList.toggle('selected', el.textContent === icon);
+  });
+}
+
+// ====== Add/Edit Page ======
+function showAddPage() {
+  editMode = 'add';
+  editSteps = [{ icon: '🍵', title: '', desc: '', image: null }];
+  selectedIcon = '🧋';
+  document.getElementById('editName').value = '';
+  document.getElementById('editIntro').value = '';
+  document.getElementById('editCategory').value = '';
+  buildIconPicker();
+  renderStepEdits();
+  showPage('edit');
+  backBtn.style.display = 'block';
+  addBtn.style.display = 'none';
+  headerTitle.textContent = '＋ 新增饮品';
+}
+
+function editDrink(id) {
+  const drink = drinks.find(d => d.id === id);
+  if (!drink) return;
+  editMode = 'edit';
+  editSteps = JSON.parse(JSON.stringify(drink.steps));
+  selectedIcon = drink.icon;
+  document.getElementById('editName').value = drink.name;
+  document.getElementById('editIntro').value = drink.intro || '';
+  document.getElementById('editCategory').value = drink.category;
+  buildIconPicker();
+  renderStepEdits();
+  showPage('edit');
+  backBtn.style.display = 'block';
+  addBtn.style.display = 'none';
+  headerTitle.textContent = '✏️ 编辑饮品';
+}
+
+function renderStepEdits() {
+  const list = document.getElementById('stepEditList');
+  document.getElementById('stepCount').textContent = `${editSteps.length} 步`;
+
+  if (editSteps.length === 0) {
+    list.innerHTML = '<div class="empty-steps">还没有步骤，添加一个吧</div>';
+    return;
+  }
+
+  list.innerHTML = editSteps.map((s, i) => `
+    <div class="step-edit-card" data-index="${i}">
+      <div class="step-edit-header">
+        <span class="step-edit-num">步骤 ${i + 1}</span>
+        <button class="step-edit-delete" onclick="deleteStep(${i})">删除</button>
+      </div>
+      <div class="edit-label">图标</div>
+      <div class="icon-picker" id="stepIconPicker${i}">${ICONS.map(icon => `<div class="icon-option${s.icon === icon ? ' selected' : ''}" onclick="selectStepIcon(${i},'${icon}')">${icon}</div>`).join('')}</div>
+      <input type="text" class="edit-input" placeholder="步骤标题" value="${escHtml(s.title)}" onchange="editSteps[${i}].title=this.value">
+      <input type="text" class="edit-input" placeholder="详细步骤说明（文字）" value="${escHtml(s.desc)}" onchange="editSteps[${i}].desc=this.value">
+      <div class="img-upload-box" id="imgBox${i}">
+        <input type="file" accept="image/*" onchange="handleImageUpload(${i},this.files[0])">
+        <div class="img-upload-hint" id="imgHint${i}">📷 点击上传图片（可选）</div>
+        <img class="img-upload-preview" id="imgPreview${i}" src="${s.image || ''}" alt="">
+        <button class="img-remove-btn${s.image ? ' visible' : ''}" id="imgRemove${i}" onclick="event.stopPropagation();removeStepImage(${i})">移除图片</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function escHtml(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function selectStepIcon(index, icon) {
+  editSteps[index].icon = icon;
+  const picker = document.getElementById('stepIconPicker' + index);
+  picker.querySelectorAll('.icon-option').forEach(el => {
+    el.classList.toggle('selected', el.textContent === icon);
+  });
+}
+
+function handleImageUpload(index, file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    editSteps[index].image = e.target.result;
+    const preview = document.getElementById('imgPreview' + index);
+    const hint = document.getElementById('imgHint' + index);
+    const removeBtn = document.getElementById('imgRemove' + index);
+    preview.src = e.target.result;
+    preview.classList.add('visible');
+    hint.style.display = 'none';
+    removeBtn.classList.add('visible');
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeStepImage(index) {
+  editSteps[index].image = null;
+  const preview = document.getElementById('imgPreview' + index);
+  const hint = document.getElementById('imgHint' + index);
+  const removeBtn = document.getElementById('imgRemove' + index);
+  preview.src = '';
+  preview.classList.remove('visible');
+  hint.style.display = '';
+  removeBtn.classList.remove('visible');
+  preview.parentElement.querySelector('input').value = '';
+}
+
+function addStep() {
+  editSteps.push({ icon: '🍵', title: '', desc: '', image: null });
+  renderStepEdits();
+}
+
+function deleteStep(index) {
+  if (editSteps.length <= 1) {
+    showToast('至少需要 1 个步骤');
+    return;
+  }
+  editSteps.splice(index, 1);
+  renderStepEdits();
+}
+
+function saveDrink() {
+  const name = document.getElementById('editName').value.trim();
+  const intro = document.getElementById('editIntro').value.trim();
+  const category = document.getElementById('editCategory').value.trim() || '自选';
+
+  if (!name) { showToast('请输入饮品名称'); return; }
+
+  // Validate steps
+  const validSteps = editSteps.filter(s => s.title.trim() || s.desc.trim());
+  if (validSteps.length === 0) { showToast('请至少填写 1 个步骤'); return; }
+
+  const drink = {
+    id: editMode === 'edit' ? currentDrink.id : 'custom-' + Date.now(),
+    name,
+    category,
+    intro,
+    icon: selectedIcon,
+    steps: editSteps.filter(s => s.title.trim() || s.desc.trim())
+  };
+
+  if (editMode === 'edit') {
+    const idx = drinks.findIndex(d => d.id === currentDrink.id);
+    if (idx !== -1) drinks[idx] = drink;
+  } else {
+    drinks.push(drink);
+  }
+
+  saveDrinks();
+  drinkCount.textContent = drinks.length;
+  showToast(editMode === 'edit' ? '已更新！' : '已保存！');
+  goHome();
+}
+
+function cancelEdit() {
+  showPage('home');
+  headerTitle.textContent = '🧋 奶茶调配助手';
+  backBtn.style.display = 'none';
+  addBtn.style.display = 'block';
+  renderDrinkList(drinks);
+}
+
+// ====== Delete ======
+function deleteDrink(id) {
+  const drink = drinks.find(d => d.id === id);
+  if (!drink) return;
+  showConfirm(`确认删除「${drink.name}」？`, `删除后无法恢复。`, () => {
+    drinks = drinks.filter(d => d.id !== id);
+    saveDrinks();
+    drinkCount.textContent = drinks.length;
+    renderDrinkList(drinks);
+    showToast('已删除');
+  });
+}
+
+// ====== Confirm Dialog ======
+function showConfirm(title, msg, callback) {
+  document.getElementById('confirmTitle').textContent = title;
+  document.getElementById('confirmMsg').textContent = msg;
+  document.getElementById('confirmOverlay').classList.add('active');
+  confirmCallback = callback;
+}
+
+function confirmNo() {
+  document.getElementById('confirmOverlay').classList.remove('active');
+  confirmCallback = null;
+}
+
+function confirmYes() {
+  document.getElementById('confirmOverlay').classList.remove('active');
+  if (confirmCallback) confirmCallback();
+  confirmCallback = null;
+}
+
+// ====== Toast ======
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// ====== Start ======
+init();
+</script>
+</body>
+</html>
