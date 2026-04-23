@@ -169,6 +169,7 @@
     <div class="header-subtitle" id="headerSubtitle"></div>
   </div>
   <button class="header-add" id="addBtn" onclick="showAddPage()">＋</button>
+  <button class="header-add" id="syncBtn" onclick="showSyncMenu()" style="font-size:18px;">☰</button>
 </header>
 
 <!-- Home Page -->
@@ -252,6 +253,20 @@
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
+
+<!-- Sync Menu Overlay -->
+<div class="confirm-overlay" id="syncOverlay">
+  <div class="confirm-box">
+    <div class="confirm-title" id="syncTitle">数据同步</div>
+    <div class="confirm-msg" id="syncMsg" style="margin-bottom:16px;">将本地配方导出或从文件导入</div>
+    <div class="confirm-btns" style="flex-direction:column;gap:8px;">
+      <button class="confirm-yes" style="background:var(--tea-green);" onclick="exportDrinks()">📤 导出配方</button>
+      <button class="confirm-yes" style="background:var(--caramel);" onclick="document.getElementById('importFile').click()">📥 导入配方</button>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importDrinks(this.files[0])">
+      <button class="confirm-no" onclick="closeSyncMenu()">取消</button>
+    </div>
+  </div>
+</div>
 
 <script>
 // ====== Default Data ======
@@ -391,6 +406,7 @@ let editMode = null; // null | 'add' | 'edit'
 let editSteps = [];
 let selectedIcon = "🧋";
 let confirmCallback = null;
+let syncCallback = null;
 
 // ====== DOM ======
 const homePage = document.getElementById('homePage');
@@ -846,6 +862,57 @@ function showToast(msg) {
   toast.textContent = msg;
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// ====== Sync Menu ======
+function showSyncMenu() {
+  document.getElementById('syncOverlay').classList.add('active');
+}
+
+function closeSyncMenu() {
+  document.getElementById('syncOverlay').classList.remove('active');
+}
+
+function exportDrinks() {
+  closeSyncMenu();
+  const data = localStorage.getItem('bubble-tea-drinks');
+  if (!data) { showToast('暂无本地数据'); return; }
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'my-bubble-tea-recipes.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('已导出配方文件！');
+}
+
+function importDrinks(file) {
+  closeSyncMenu();
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if (!Array.isArray(imported)) throw new Error('格式错误');
+      // Merge: add imported drinks that don't exist
+      const existingIds = drinks.map(d => d.id);
+      let added = 0;
+      imported.forEach(d => {
+        if (!existingIds.includes(d.id)) {
+          drinks.push(d);
+          added++;
+        }
+      });
+      saveDrinks();
+      drinkCount.textContent = drinks.length;
+      renderDrinkList(drinks);
+      showToast(`成功导入 ${added} 个新配方！`);
+    } catch (err) {
+      showToast('导入失败：文件格式错误');
+    }
+  };
+  reader.readAsText(file);
 }
 
 // ====== Start ======
