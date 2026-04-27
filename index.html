@@ -3,6 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#5D4037">
+  <meta name="description" content="🧋 奶茶调配助手 - 一步步教你做奶茶">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="奶茶调配">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧋</text></svg>">
   <title>🧋 奶茶调配助手</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
@@ -18,14 +25,38 @@
       --danger: #e53935;
       --shadow: 0 4px 12px rgba(93, 64, 55, 0.15);
       --shadow-hover: 0 8px 24px rgba(93, 64, 55, 0.2);
+      --bg: var(--cream);
+      --card-bg: var(--white);
+      --input-bg: var(--cream);
+      --border: #d4c4b7;
+      --text-primary: var(--text-dark);
+      --text-secondary: var(--text-light);
+    }
+    [data-theme="dark"] {
+      --boba-brown: #8D6E63;
+      --cream: #1E1410;
+      --caramel: #A67C52;
+      --tea-green: #558B2F;
+      --text-dark: #F5F0EB;
+      --text-light: #A89890;
+      --white: #2C2118;
+      --danger: #EF5350;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.5);
+      --bg: #1A120C;
+      --card-bg: #2C2118;
+      --input-bg: #241A13;
+      --border: #4A3A2E;
+      --text-primary: #F5F0EB;
+      --text-secondary: #A89890;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
     body {
       font-family: 'Noto Sans SC', system-ui, sans-serif;
-      background: var(--cream);
-      color: var(--text-dark);
+      background: var(--bg);
+      color: var(--text-primary);
       min-height: 100vh;
       max-width: 480px;
       margin: 0 auto;
@@ -34,7 +65,7 @@
 
     /* Header */
     .header {
-      background: var(--white);
+      background: var(--card-bg);
       padding: 16px 20px;
       display: flex;
       align-items: center;
@@ -45,20 +76,20 @@
       z-index: 100;
     }
     .header-back { background: none; border: none; font-size: 24px; cursor: pointer; padding: 8px; margin: -8px; border-radius: 8px; transition: background 0.2s; }
-    .header-back:active { background: rgba(93,64,55,0.1); }
+    .header-back:active { background: rgba(0,0,0,0.1); }
     .header-title { flex: 1; font-weight: 700; font-size: 18px; }
-    .header-subtitle { font-size: 13px; color: var(--text-light); font-weight: 400; }
+    .header-subtitle { font-size: 13px; color: var(--text-secondary); font-weight: 400; }
     .header-add { background: none; border: none; font-size: 22px; cursor: pointer; padding: 8px; border-radius: 8px; transition: background 0.2s; }
-    .header-add:active { background: rgba(93,64,55,0.1); }
+    .header-add:active { background: rgba(0,0,0,0.1); }
     .header-sound { background: none; border: none; font-size: 20px; cursor: pointer; padding: 8px; border-radius: 8px; transition: background 0.2s; position: relative; }
-    .header-sound:active { background: rgba(93,64,55,0.1); }
+    .header-sound:active { background: rgba(0,0,0,0.1); }
     .header-sound.muted { opacity: 0.4; }
     .header-sound .sound-tooltip { display: none; position: absolute; top: 100%; right: 0; background: var(--boba-brown); color: white; font-size: 12px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; z-index: 10; margin-top: 4px; }
     .header-sound:hover .sound-tooltip { display: block; }
-    .voice-toggle { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--cream); border-radius: 10px; margin-bottom: 16px; font-size: 14px; }
+    .voice-toggle { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--bg); border-radius: 10px; margin-bottom: 16px; font-size: 14px; }
     .voice-toggle button { flex: 1; padding: 8px; border-radius: 8px; border: 2px solid transparent; font-size: 13px; font-family: inherit; cursor: pointer; transition: all 0.15s; }
-    .voice-toggle button.active { border-color: var(--boba-brown); background: var(--white); font-weight: 700; }
-    .voice-toggle button:not(.active) { background: none; color: var(--text-light); }
+    .voice-toggle button.active { border-color: var(--boba-brown); background: var(--card-bg); font-weight: 700; }
+    .voice-toggle button:not(.active) { background: none; color: var(--text-secondary); }
 
     /* Page */
     .page { display: none; animation: fadeIn 0.3s ease-out; }
@@ -72,44 +103,44 @@
     .drink-card .fav-btn.faved { color: #f5a623; }
     .fav-section { margin-bottom: 20px; }
     .fav-section-title { font-size: 14px; color: var(--tea-green); font-weight: 500; margin-bottom: 12px; padding-left: 4px; display: flex; align-items: center; gap: 6px; }
-    .fav-drink-card { background: var(--white); border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; cursor: pointer; box-shadow: var(--shadow); transition: transform 0.15s, box-shadow 0.15s; border: none; width: 100%; text-align: left; font-family: inherit; }
+    .fav-drink-card { background: var(--card-bg); border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; cursor: pointer; box-shadow: var(--shadow); transition: transform 0.15s, box-shadow 0.15s; border: none; width: 100%; text-align: left; font-family: inherit; }
     .fav-drink-card:active { transform: scale(0.98); box-shadow: var(--shadow-hover); }
     .fav-drink-card .drink-actions { display: flex; gap: 6px; flex-shrink: 0; }
     .fav-drink-card .edit-btn { background: none; border: none; font-size: 15px; cursor: pointer; padding: 4px 6px; border-radius: 6px; }
-    .fav-drink-card .edit-btn:active { background: rgba(93,64,55,0.1); }
+    .fav-drink-card .edit-btn:active { background: rgba(0,0,0,0.1); }
     .fav-drink-card .delete-btn { background: none; border: none; font-size: 15px; cursor: pointer; padding: 4px 6px; border-radius: 6px; color: var(--danger); }
     .fav-drink-icon { font-size: 32px; flex-shrink: 0; }
     .fav-drink-info { flex: 1; }
     .fav-drink-name { font-weight: 700; font-size: 16px; }
     .search-enhance { display: flex; gap: 8px; margin-bottom: 16px; }
-    .search-box { background: var(--white); border: 2px solid transparent; border-radius: 12px; padding: 14px 16px; font-size: 16px; font-family: inherit; flex: 1; box-shadow: var(--shadow); transition: border-color 0.2s; outline: none; }
+    .search-box { background: var(--card-bg); border: 2px solid transparent; border-radius: 12px; padding: 14px 16px; font-size: 16px; font-family: inherit; flex: 1; box-shadow: var(--shadow); transition: border-color 0.2s; outline: none; }
     .search-box:focus { border-color: var(--caramel); }
-    .filter-btn { background: var(--white); border: 2px solid #d4c4b7; border-radius: 12px; padding: 12px 14px; font-size: 15px; cursor: pointer; font-family: inherit; transition: all 0.2s; white-space: nowrap; }
-    .filter-btn:active { background: rgba(93,64,55,0.05); }
-    .filter-btn.active { border-color: var(--caramel); background: var(--cream); }
-    .category-filter-panel { display: none; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; padding: 12px; background: var(--white); border-radius: 12px; box-shadow: var(--shadow); }
+    .filter-btn { background: var(--card-bg); border: 2px solid var(--border); border-radius: 12px; padding: 12px 14px; font-size: 15px; cursor: pointer; font-family: inherit; transition: all 0.2s; white-space: nowrap; }
+    .filter-btn:active { background: rgba(0,0,0,0.05); }
+    .filter-btn.active { border-color: var(--caramel); background: var(--bg); }
+    .category-filter-panel { display: none; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; padding: 12px; background: var(--card-bg); border-radius: 12px; box-shadow: var(--shadow); }
     .category-filter-panel.open { display: flex; }
-    .filter-chip { padding: 6px 12px; border-radius: 20px; border: 2px solid #d4c4b7; font-size: 13px; cursor: pointer; transition: all 0.15s; font-family: inherit; background: none; }
+    .filter-chip { padding: 6px 12px; border-radius: 20px; border: 2px solid var(--border); font-size: 13px; cursor: pointer; transition: all 0.15s; font-family: inherit; background: none; }
     .filter-chip:hover { border-color: var(--caramel); }
     .filter-chip.selected { border-color: var(--caramel); background: var(--caramel); color: white; }
-    .search-no-result { text-align: center; padding: 32px 20px; color: var(--text-light); }
+    .search-no-result { text-align: center; padding: 32px 20px; color: var(--text-secondary); }
     .search-no-result span { display: block; margin-bottom: 12px; font-size: 40px; }
     .category { margin-bottom: 28px; }
-    .category-title { font-size: 14px; color: var(--text-light); font-weight: 500; margin-bottom: 12px; padding-left: 4px; }
+    .category-title { font-size: 14px; color: var(--text-secondary); font-weight: 500; margin-bottom: 12px; padding-left: 4px; }
     .drink-grid { display: flex; flex-direction: column; gap: 12px; }
-    .drink-card { background: var(--white); border-radius: 16px; padding: 18px 20px; display: flex; align-items: center; gap: 16px; cursor: pointer; box-shadow: var(--shadow); transition: transform 0.15s, box-shadow 0.15s; border: none; width: 100%; text-align: left; font-family: inherit; }
+    .drink-card { background: var(--card-bg); border-radius: 16px; padding: 18px 20px; display: flex; align-items: center; gap: 16px; cursor: pointer; box-shadow: var(--shadow); transition: transform 0.15s, box-shadow 0.15s; border: none; width: 100%; text-align: left; font-family: inherit; }
     .drink-card:active { transform: scale(0.98); box-shadow: var(--shadow-hover); }
     .drink-card .drink-actions { display: flex; gap: 8px; flex-shrink: 0; }
     .drink-card .edit-btn { background: none; border: none; font-size: 16px; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
-    .drink-card .edit-btn:active { background: rgba(93,64,55,0.1); }
+    .drink-card .edit-btn:active { background: rgba(0,0,0,0.1); }
     .drink-card .delete-btn { background: none; border: none; font-size: 16px; cursor: pointer; padding: 4px 8px; border-radius: 6px; color: var(--danger); }
     .drink-icon { font-size: 36px; flex-shrink: 0; }
     .drink-info { flex: 1; }
     .drink-name { font-weight: 700; font-size: 17px; margin-bottom: 4px; }
-    .drink-intro { font-size: 13px; color: var(--text-light); }
+    .drink-intro { font-size: 13px; color: var(--text-secondary); }
     .drink-arrow { font-size: 20px; color: var(--caramel); }
-    .no-result { text-align: center; padding: 40px 20px; color: var(--text-light); }
-    .footer-status { text-align: center; padding: 24px; font-size: 13px; color: var(--text-light); }
+    .no-result { text-align: center; padding: 40px 20px; color: var(--text-secondary); }
+    .footer-status { text-align: center; padding: 24px; font-size: 13px; color: var(--text-secondary); }
 
     /* Step Page */
     .step-page { padding: 20px; }
@@ -117,12 +148,12 @@
     .progress-dot { width: 10px; height: 10px; border-radius: 50%; background: #d4c4b7; transition: all 0.3s ease; }
     .progress-dot.done { background: var(--caramel); width: 8px; height: 8px; }
     .progress-dot.current { background: var(--boba-brown); width: 14px; height: 14px; }
-    .step-card { background: var(--white); border-radius: 20px; padding: 32px 24px; text-align: center; box-shadow: var(--shadow); margin-bottom: 24px; }
+    .step-card { background: var(--card-bg); border-radius: 20px; padding: 32px 24px; text-align: center; box-shadow: var(--shadow); margin-bottom: 24px; }
     .step-icon { font-size: 72px; margin-bottom: 16px; display: block; animation: stepBounce 0.4s ease-out; }
     @keyframes stepBounce { 0% { transform: scale(0.7); opacity: 0; } 60% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
-    .step-number { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--text-light); margin-bottom: 8px; font-weight: 700; }
+    .step-number { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--text-secondary); margin-bottom: 8px; font-weight: 700; }
     .step-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; color: var(--boba-brown); }
-    .step-desc { font-size: 16px; line-height: 1.7; color: var(--text-dark); text-align: left; background: var(--cream); border-radius: 12px; padding: 16px; min-height: 80px; }
+    .step-desc { font-size: 16px; line-height: 1.7; color: var(--text-primary); text-align: left; background: var(--bg); border-radius: 12px; padding: 16px; min-height: 80px; }
     .step-image { margin-top: 12px; border-radius: 12px; max-width: 100%; max-height: 200px; object-fit: cover; display: none; }
     .step-image.visible { display: block; }
     .speak-indicator { font-size: 13px; color: var(--caramel); margin-bottom: 16px; height: 20px; display: flex; align-items: center; justify-content: center; gap: 6px; }
@@ -131,8 +162,8 @@
     .nav-buttons { display: flex; flex-direction: column; gap: 12px; }
     .btn-primary { background: var(--boba-brown); color: var(--white); border: none; padding: 18px; border-radius: 14px; font-size: 18px; font-weight: 700; font-family: inherit; cursor: pointer; transition: transform 0.1s, background 0.2s; }
     .btn-primary:active { transform: scale(0.97); background: #4a3530; }
-    .btn-secondary { background: none; border: 2px solid #d4c4b7; color: var(--text-light); padding: 14px; border-radius: 12px; font-size: 15px; font-family: inherit; cursor: pointer; transition: all 0.2s; }
-    .btn-secondary:active { background: rgba(93,64,55,0.05); }
+    .btn-secondary { background: none; border: 2px solid var(--border); color: var(--text-secondary); padding: 14px; border-radius: 12px; font-size: 15px; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+    .btn-secondary:active { background: rgba(0,0,0,0.05); }
     .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
 
     /* Complete Page */
@@ -140,7 +171,7 @@
     .complete-icon { font-size: 100px; margin-bottom: 24px; animation: bounce 0.6s ease-out; }
     @keyframes bounce { 0% { transform: scale(0); } 60% { transform: scale(1.2); } 100% { transform: scale(1); } }
     .complete-title { font-size: 28px; font-weight: 700; color: var(--boba-brown); margin-bottom: 12px; }
-    .complete-subtitle { font-size: 16px; color: var(--text-light); margin-bottom: 40px; }
+    .complete-subtitle { font-size: 16px; color: var(--text-secondary); margin-bottom: 40px; }
     .complete-buttons { display: flex; flex-direction: column; gap: 12px; }
     .btn-complete { background: var(--boba-brown); color: var(--white); border: none; padding: 16px; border-radius: 14px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; transition: transform 0.1s; }
     .btn-complete:active { transform: scale(0.97); }
@@ -148,36 +179,36 @@
 
     /* Add/Edit Page */
     .edit-page { padding: 20px; }
-    .edit-section { background: var(--white); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px; }
+    .edit-section { background: var(--card-bg); border-radius: 16px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 20px; }
     .edit-section-title { font-weight: 700; font-size: 16px; margin-bottom: 16px; color: var(--boba-brown); display: flex; align-items: center; justify-content: space-between; }
-    .edit-label { font-size: 13px; color: var(--text-light); font-weight: 500; margin-bottom: 6px; }
-    .edit-input { background: var(--cream); border: 2px solid transparent; border-radius: 10px; padding: 12px 14px; font-size: 15px; font-family: inherit; width: 100%; margin-bottom: 12px; outline: none; transition: border-color 0.2s; }
+    .edit-label { font-size: 13px; color: var(--text-secondary); font-weight: 500; margin-bottom: 6px; }
+    .edit-input { background: var(--bg); border: 2px solid transparent; border-radius: 10px; padding: 12px 14px; font-size: 15px; font-family: inherit; width: 100%; margin-bottom: 12px; outline: none; transition: border-color 0.2s; }
     .edit-input:focus { border-color: var(--caramel); }
     .edit-input-row { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
     .edit-input-row .edit-input { margin-bottom: 0; flex: 1; }
-    .step-edit-card { background: var(--cream); border-radius: 12px; padding: 16px; margin-bottom: 12px; position: relative; }
+    .step-edit-card { background: var(--bg); border-radius: 12px; padding: 16px; margin-bottom: 12px; position: relative; }
     .step-edit-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .step-edit-num { font-weight: 700; color: var(--boba-brown); font-size: 14px; }
     .step-edit-delete { background: none; border: none; color: var(--danger); font-size: 13px; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
-    .step-edit-delete:active { background: rgba(229,57,53,0.1); }
+    .step-edit-delete:active { background: rgba(0,0,0,0.1); }
     .img-upload-box { border: 2px dashed #d4c4b7; border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; margin-top: 8px; transition: border-color 0.2s; position: relative; }
     .img-upload-box:hover { border-color: var(--caramel); }
     .img-upload-box input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
     .img-upload-preview { max-width: 100%; max-height: 150px; border-radius: 8px; margin-top: 8px; display: none; }
     .img-upload-preview.visible { display: block; }
-    .img-upload-hint { font-size: 13px; color: var(--text-light); }
+    .img-upload-hint { font-size: 13px; color: var(--text-secondary); }
     .img-remove-btn { background: var(--danger); color: white; border: none; border-radius: 6px; padding: 4px 10px; font-size: 12px; cursor: pointer; margin-top: 6px; display: none; }
     .img-remove-btn.visible { display: inline-block; }
     .icon-picker { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
     .icon-option { font-size: 28px; padding: 8px; border-radius: 10px; border: 2px solid transparent; cursor: pointer; transition: all 0.15s; }
-    .icon-option:hover { background: var(--cream); }
+    .icon-option:hover { background: var(--bg); }
     .icon-option.selected { border-color: var(--caramel); background: rgba(212,165,116,0.15); }
-    .btn-add-step { width: 100%; background: none; border: 2px dashed #d4c4b7; color: var(--text-light); padding: 14px; border-radius: 12px; font-size: 15px; font-family: inherit; cursor: pointer; transition: all 0.2s; }
-    .btn-add-step:active { background: rgba(93,64,55,0.05); }
+    .btn-add-step { width: 100%; background: none; border: 2px dashed #d4c4b7; color: var(--text-secondary); padding: 14px; border-radius: 12px; font-size: 15px; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+    .btn-add-step:active { background: rgba(0,0,0,0.05); }
     .btn-save { width: 100%; background: var(--boba-brown); color: var(--white); border: none; padding: 16px; border-radius: 14px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; margin-top: 8px; }
     .btn-save:active { background: #4a3530; }
-    .btn-cancel { width: 100%; background: none; border: 2px solid #d4c4b7; color: var(--text-light); padding: 14px; border-radius: 14px; font-size: 15px; font-family: inherit; cursor: pointer; margin-top: 10px; }
-    .empty-steps { text-align: center; padding: 24px; color: var(--text-light); font-size: 14px; }
+    .btn-cancel { width: 100%; background: none; border: 2px solid var(--border); color: var(--text-secondary); padding: 14px; border-radius: 14px; font-size: 15px; font-family: inherit; cursor: pointer; margin-top: 10px; }
+    .empty-steps { text-align: center; padding: 24px; color: var(--text-secondary); font-size: 14px; }
 
     /* Toast */
     .toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--boba-brown); color: var(--white); padding: 12px 24px; border-radius: 24px; font-size: 14px; opacity: 0; transition: all 0.3s ease; pointer-events: none; z-index: 200; }
@@ -186,12 +217,12 @@
     /* Confirm dialog */
     .confirm-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
     .confirm-overlay.active { display: flex; }
-    .confirm-box { background: var(--white); border-radius: 16px; padding: 24px; max-width: 320px; width: 100%; text-align: center; }
+    .confirm-box { background: var(--card-bg); border-radius: 16px; padding: 24px; max-width: 320px; width: 100%; text-align: center; }
     .confirm-title { font-weight: 700; font-size: 17px; margin-bottom: 8px; }
-    .confirm-msg { font-size: 14px; color: var(--text-light); margin-bottom: 20px; }
+    .confirm-msg { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; }
     .confirm-btns { display: flex; gap: 10px; }
     .confirm-yes { flex: 1; background: var(--danger); color: white; border: none; padding: 12px; border-radius: 10px; font-size: 15px; font-weight: 500; font-family: inherit; cursor: pointer; }
-    .confirm-no { flex: 1; background: var(--cream); color: var(--text-dark); border: none; padding: 12px; border-radius: 10px; font-size: 15px; font-family: inherit; cursor: pointer; }
+    .confirm-no { flex: 1; background: var(--bg); color: var(--text-primary); border: none; padding: 12px; border-radius: 10px; font-size: 15px; font-family: inherit; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -203,6 +234,7 @@
     <div class="header-subtitle" id="headerSubtitle"></div>
   </div>
   <button class="header-add" id="soundBtn" onclick="toggleSound()" title="声音设置" style="display:none;">🔊</button>
+  <button class="header-theme" id="themeBtn" onclick="toggleTheme()" title="切换主题">🌙</button>
   <button class="header-add" id="addBtn" onclick="showAddPage()">＋</button>
   <button class="header-add" id="syncBtn" onclick="showSyncMenu()" style="font-size:18px;">☰</button>
 </header>
@@ -316,7 +348,7 @@
   </div>
 </div>
 
-<script>
+<script defer>
 // ====== Default Data ======
 const DEFAULT_DRINKS = [
   {id:"yang-qing-mo-li-cold",name:"椰青茉莉",category:"椰青系列",intro:"冷饮",icon:"🥥",steps:[{icon:"📝",title:"第1步",desc:"冷饮杯加爆爆珠2勺"},{icon:"📝",title:"第2步",desc:"中杯加标准糖浆25，大杯加标准糖浆30"},{icon:"📝",title:"第3步",desc:"中杯加椰子水150毫升，大杯加180毫升"},{icon:"📝",title:"第4步",desc:"搅匀，加冰块"},{icon:"📝",title:"第5步",desc:"中杯加茉莉茶汤100毫升，大杯加120毫升，检查出餐"}]},
@@ -366,6 +398,7 @@ let selectedIcon = "🧋";
 let confirmCallback = null;
 let syncCallback = null;
 let soundMuted = localStorage.getItem('bubble-tea-sound-muted') === 'true';
+let theme = localStorage.getItem('bubble-tea-theme') || 'light';
 let voiceGender = localStorage.getItem('bubble-tea-voice') || 'female';
 let favoriteIds = JSON.parse(localStorage.getItem('bubble-tea-favorites') || '[]');
 let activeCategory = '';
@@ -406,6 +439,7 @@ function init() {
 
   updateSoundBtn();
   document.getElementById('soundBtn').style.display = 'block';
+  applyTheme();
   buildFilterPanel();
 
   backBtn.addEventListener('click', () => {
@@ -1023,7 +1057,22 @@ function updateSoundBtn() {
   btn.textContent = soundMuted ? '🔇' : '🔊';
 }
 
+// ====== Theme Toggle ======
+function toggleTheme() {
+  theme = theme === 'light' ? 'dark' : 'light';
+  localStorage.setItem('bubble-tea-theme', theme);
+  applyTheme();
+}
+
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('themeBtn').textContent = theme === 'dark' ? '☀️' : '🌙';
+}
+
 // ====== Start ======
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
 init();
 </script>
 </body>
