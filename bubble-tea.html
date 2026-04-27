@@ -50,6 +50,15 @@
     .header-subtitle { font-size: 13px; color: var(--text-light); font-weight: 400; }
     .header-add { background: none; border: none; font-size: 22px; cursor: pointer; padding: 8px; border-radius: 8px; transition: background 0.2s; }
     .header-add:active { background: rgba(93,64,55,0.1); }
+    .header-sound { background: none; border: none; font-size: 20px; cursor: pointer; padding: 8px; border-radius: 8px; transition: background 0.2s; position: relative; }
+    .header-sound:active { background: rgba(93,64,55,0.1); }
+    .header-sound.muted { opacity: 0.4; }
+    .header-sound .sound-tooltip { display: none; position: absolute; top: 100%; right: 0; background: var(--boba-brown); color: white; font-size: 12px; padding: 4px 8px; border-radius: 6px; white-space: nowrap; z-index: 10; margin-top: 4px; }
+    .header-sound:hover .sound-tooltip { display: block; }
+    .voice-toggle { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--cream); border-radius: 10px; margin-bottom: 16px; font-size: 14px; }
+    .voice-toggle button { flex: 1; padding: 8px; border-radius: 8px; border: 2px solid transparent; font-size: 13px; font-family: inherit; cursor: pointer; transition: all 0.15s; }
+    .voice-toggle button.active { border-color: var(--boba-brown); background: var(--white); font-weight: 700; }
+    .voice-toggle button:not(.active) { background: none; color: var(--text-light); }
 
     /* Page */
     .page { display: none; animation: fadeIn 0.3s ease-out; }
@@ -58,8 +67,33 @@
 
     /* Home Page */
     .home-page { padding: 20px; }
-    .search-box { background: var(--white); border: 2px solid transparent; border-radius: 12px; padding: 14px 16px; font-size: 16px; font-family: inherit; width: 100%; margin-bottom: 24px; box-shadow: var(--shadow); transition: border-color 0.2s; outline: none; }
+    .drink-card .fav-btn { background: none; border: none; font-size: 18px; cursor: pointer; padding: 4px 6px; border-radius: 6px; transition: transform 0.1s; }
+    .drink-card .fav-btn:active { transform: scale(1.3); }
+    .drink-card .fav-btn.faved { color: #f5a623; }
+    .fav-section { margin-bottom: 20px; }
+    .fav-section-title { font-size: 14px; color: var(--tea-green); font-weight: 500; margin-bottom: 12px; padding-left: 4px; display: flex; align-items: center; gap: 6px; }
+    .fav-drink-card { background: var(--white); border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; cursor: pointer; box-shadow: var(--shadow); transition: transform 0.15s, box-shadow 0.15s; border: none; width: 100%; text-align: left; font-family: inherit; }
+    .fav-drink-card:active { transform: scale(0.98); box-shadow: var(--shadow-hover); }
+    .fav-drink-card .drink-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .fav-drink-card .edit-btn { background: none; border: none; font-size: 15px; cursor: pointer; padding: 4px 6px; border-radius: 6px; }
+    .fav-drink-card .edit-btn:active { background: rgba(93,64,55,0.1); }
+    .fav-drink-card .delete-btn { background: none; border: none; font-size: 15px; cursor: pointer; padding: 4px 6px; border-radius: 6px; color: var(--danger); }
+    .fav-drink-icon { font-size: 32px; flex-shrink: 0; }
+    .fav-drink-info { flex: 1; }
+    .fav-drink-name { font-weight: 700; font-size: 16px; }
+    .search-enhance { display: flex; gap: 8px; margin-bottom: 16px; }
+    .search-box { background: var(--white); border: 2px solid transparent; border-radius: 12px; padding: 14px 16px; font-size: 16px; font-family: inherit; flex: 1; box-shadow: var(--shadow); transition: border-color 0.2s; outline: none; }
     .search-box:focus { border-color: var(--caramel); }
+    .filter-btn { background: var(--white); border: 2px solid #d4c4b7; border-radius: 12px; padding: 12px 14px; font-size: 15px; cursor: pointer; font-family: inherit; transition: all 0.2s; white-space: nowrap; }
+    .filter-btn:active { background: rgba(93,64,55,0.05); }
+    .filter-btn.active { border-color: var(--caramel); background: var(--cream); }
+    .category-filter-panel { display: none; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; padding: 12px; background: var(--white); border-radius: 12px; box-shadow: var(--shadow); }
+    .category-filter-panel.open { display: flex; }
+    .filter-chip { padding: 6px 12px; border-radius: 20px; border: 2px solid #d4c4b7; font-size: 13px; cursor: pointer; transition: all 0.15s; font-family: inherit; background: none; }
+    .filter-chip:hover { border-color: var(--caramel); }
+    .filter-chip.selected { border-color: var(--caramel); background: var(--caramel); color: white; }
+    .search-no-result { text-align: center; padding: 32px 20px; color: var(--text-light); }
+    .search-no-result span { display: block; margin-bottom: 12px; font-size: 40px; }
     .category { margin-bottom: 28px; }
     .category-title { font-size: 14px; color: var(--text-light); font-weight: 500; margin-bottom: 12px; padding-left: 4px; }
     .drink-grid { display: flex; flex-direction: column; gap: 12px; }
@@ -168,6 +202,7 @@
     <div class="header-title" id="headerTitle">🧋 奶茶调配助手</div>
     <div class="header-subtitle" id="headerSubtitle"></div>
   </div>
+  <button class="header-add" id="soundBtn" onclick="toggleSound()" title="声音设置" style="display:none;">🔊</button>
   <button class="header-add" id="addBtn" onclick="showAddPage()">＋</button>
   <button class="header-add" id="syncBtn" onclick="showSyncMenu()" style="font-size:18px;">☰</button>
 </header>
@@ -175,7 +210,11 @@
 <!-- Home Page -->
 <div class="page active" id="homePage">
   <div class="home-page">
-    <input type="text" class="search-box" id="searchInput" placeholder="🔍 搜索饮品...">
+    <div class="search-enhance">
+      <input type="text" class="search-box" id="searchInput" placeholder="🔍 搜索饮品...">
+      <button class="filter-btn" id="filterBtn" onclick="toggleFilterPanel()">☰ 筛选</button>
+    </div>
+    <div class="category-filter-panel" id="filterPanel"></div>
     <div id="drinkList"></div>
     <div class="footer-status">已收录 <span id="drinkCount">0</span> 款饮品配方</div>
   </div>
@@ -231,8 +270,6 @@
       <div class="edit-section-title">🍵 饮品信息</div>
       <div class="edit-label">饮品名称 *</div>
       <input type="text" class="edit-input" id="editName" placeholder="例如：珍珠奶茶">
-      <div class="edit-label">简介</div>
-      <input type="text" class="edit-input" id="editIntro" placeholder="例如：最经典的国民饮品">
       <div class="edit-label">分类</div>
       <input type="text" class="edit-input" id="editCategory" placeholder="例如：经典奶茶">
       <div class="edit-label">选择图标</div>
@@ -247,6 +284,20 @@
 
     <button class="btn-save" id="saveBtn" onclick="saveDrink()">💾 保存饮品</button>
     <button class="btn-cancel" onclick="cancelEdit()">取消</button>
+  </div>
+</div>
+
+<!-- Sound Toggle Overlay -->
+<div class="confirm-overlay" id="soundOverlay">
+  <div class="confirm-box">
+    <div class="confirm-title">🔊 声音设置</div>
+    <div class="confirm-msg" style="margin-bottom:16px;">选择朗读音色</div>
+    <div class="confirm-btns" style="flex-direction:column;gap:8px;">
+      <button class="confirm-yes" id="btnVoiceFemale" style="background:var(--boba-brown);" onclick="setVoice('female')">👩 女声</button>
+      <button class="confirm-yes" id="btnVoiceMale" style="background:#8D6E63;" onclick="setVoice('male')">👨 男声</button>
+      <button class="confirm-yes" style="background:var(--tea-green);" onclick="toggleSoundMute()" id="btnSoundMute">🔊 开启朗读</button>
+      <button class="confirm-no" onclick="closeSoundMenu()">关闭</button>
+    </div>
   </div>
 </div>
 
@@ -328,6 +379,11 @@ let editSteps = [];
 let selectedIcon = "🧋";
 let confirmCallback = null;
 let syncCallback = null;
+let soundMuted = localStorage.getItem('bubble-tea-sound-muted') === 'true';
+let voiceGender = localStorage.getItem('bubble-tea-voice') || 'female';
+let favoriteIds = JSON.parse(localStorage.getItem('bubble-tea-favorites') || '[]');
+let activeCategory = '';
+let filterOpen = false;
 
 // ====== DOM ======
 const homePage = document.getElementById('homePage');
@@ -362,6 +418,10 @@ function init() {
     }, 100);
   }
 
+  updateSoundBtn();
+  document.getElementById('soundBtn').style.display = 'block';
+  buildFilterPanel();
+
   backBtn.addEventListener('click', () => {
     if (editPage.classList.contains('active')) {
       cancelEdit();
@@ -373,8 +433,8 @@ function init() {
 
   searchInput.addEventListener('input', (e) => {
     const q = e.target.value.trim();
-    if (!q) renderDrinkList(drinks);
-    else renderDrinkList(drinks.filter(d => d.name.includes(q) || d.category.includes(q)));
+    if (!q && !activeCategory) renderDrinkList(drinks);
+    else renderDrinkList(filterDrinks(q, activeCategory));
   });
 }
 
@@ -397,46 +457,82 @@ function saveDrinks() {
 }
 
 // ====== Render Drink List ======
+function filterDrinks(query, category) {
+  return drinks.filter(d => {
+    const matchQ = !query || d.name.includes(query) || d.category.includes(query) || (d.intro && d.intro.includes(query));
+    const matchCat = !category || d.category === category;
+    return matchQ && matchCat;
+  });
+}
+
+function buildFilterPanel() {
+  const cats = [...new Set(drinks.map(d => d.category))].sort();
+  const panel = document.getElementById('filterPanel');
+  panel.innerHTML = `<button class="filter-chip${activeCategory === '' ? ' selected' : ''}" onclick="setCategory('')">全部</button>` +
+    cats.map(c => `<button class="filter-chip${activeCategory === c ? ' selected' : ''}" onclick="setCategory('${c}')">${c}</button>`).join('');
+}
+
+function setCategory(cat) {
+  activeCategory = cat;
+  filterOpen = false;
+  document.getElementById('filterPanel').classList.remove('open');
+  document.getElementById('filterBtn').classList.toggle('active', !!cat);
+  buildFilterPanel();
+  const q = searchInput.value.trim();
+  renderDrinkList(filterDrinks(q, cat));
+}
+function toggleFilterPanel() {
+  filterOpen = !filterOpen;
+  document.getElementById('filterPanel').classList.toggle('open', filterOpen);
+}
 function renderDrinkList(list) {
+  // Separate favorites
+  const favList = list.filter(d => favoriteIds.includes(d.id));
+  const normalList = list.filter(d => !favoriteIds.includes(d.id));
+
   if (list.length === 0) {
-    drinkList.innerHTML = '<div class="no-result">未找到该饮品 😅</div>';
+    drinkList.innerHTML = '<div class="search-no-result"><span>🔍</span>未找到该饮品<br><small style="font-size:13px;color:#8D6E63">试试其他关键词</small></div>';
     return;
   }
   // Deduplicate: merge drinks with same name+category into one entry
   const seen = {};
   const deduped = [];
-  list.forEach(d => {
+  normalList.forEach(d => {
     const key = d.category + '||' + d.name;
-    if (!seen[key]) {
-      seen[key] = true;
-      deduped.push(d);
-    }
+    if (!seen[key]) { seen[key] = true; deduped.push(d); }
   });
-
   const grouped = {};
   deduped.forEach(d => {
     if (!grouped[d.category]) grouped[d.category] = [];
     grouped[d.category].push(d);
   });
-
   let html = '';
+  if (favList.length > 0) {
+    html += '<div class="fav-section"><div class="fav-section-title">⭐ 我的收藏</div><div class="drink-grid">';
+    favList.forEach(d => {
+      const isFav = favoriteIds.includes(d.id);
+      html += `<div class="fav-drink-card">\n        <span class="fav-drink-icon">${d.icon}</span>\n        <div class="fav-drink-info" onclick="selectDrink('${d.id}')">\n          <div class="fav-drink-name">${d.name}</div>\n        </div>\n        <div class="drink-actions">\n          <button class="fav-btn${isFav ? ' faved' : ''}" onclick="event.stopPropagation();toggleFav('${d.id}')" title="${isFav ? '取消收藏':'收藏'}">${isFav ? '⭐' : '☆'}</button>\n          <button class="edit-btn" onclick="event.stopPropagation();editDrink('${d.id}')" title="编辑">✏️</button>\n          <button class="delete-btn" onclick="event.stopPropagation();deleteDrink('${d.id}')" title="删除">🗑️</button>\n        </div>\n      </div>`;
+    });
+    html += '</div></div>';
+  }
   Object.keys(grouped).forEach(cat => {
     html += `<div class="category"><div class="category-title">○ ${cat}</div><div class="drink-grid">`;
     grouped[cat].forEach(d => {
-      html += `<div class="drink-card">
-        <span class="drink-icon">${d.icon}</span>
-        <div class="drink-info" onclick="selectDrink('${d.id}')">
-          <div class="drink-name">${d.name}</div>
-        </div>
-        <div class="drink-actions">
-          <button class="edit-btn" onclick="event.stopPropagation();editDrink('${d.id}')" title="编辑">✏️</button>
-          <button class="delete-btn" onclick="event.stopPropagation();deleteDrink('${d.id}')" title="删除">🗑️</button>
-        </div>
-      </div>`;
+      const isFav = favoriteIds.includes(d.id);
+      html += `<div class="drink-card">\n        <span class="drink-icon">${d.icon}</span>\n        <div class="drink-info" onclick="selectDrink('${d.id}')">\n          <div class="drink-name">${d.name}</div>\n        </div>\n        <div class="drink-actions">\n          <button class="fav-btn${isFav ? ' faved' : ''}" onclick="event.stopPropagation();toggleFav('${d.id}')" title="${isFav ? '取消收藏':'收藏'}">${isFav ? '⭐' : '☆'}</button>\n          <button class="edit-btn" onclick="event.stopPropagation();editDrink('${d.id}')" title="编辑">✏️</button>\n          <button class="delete-btn" onclick="event.stopPropagation();deleteDrink('${d.id}')" title="删除">🗑️</button>\n        </div>\n      </div>`;
     });
     html += '</div></div>';
   });
   drinkList.innerHTML = html;
+}
+
+function toggleFav(id) {
+  const idx = favoriteIds.indexOf(id);
+  if (idx === -1) favoriteIds.push(id);
+  else favoriteIds.splice(idx, 1);
+  localStorage.setItem('bubble-tea-favorites', JSON.stringify(favoriteIds));
+  const q = searchInput.value.trim();
+  renderDrinkList(filterDrinks(q, activeCategory));
 }
 
 // ====== Select Drink ======
@@ -447,6 +543,9 @@ function selectDrink(id) {
 
   // Find siblings with same name and category
   const siblings = drinks.filter(d => d.name === drink.name && d.category === drink.category);
+
+  // Hide sound button when entering drink detail
+  document.getElementById('soundBtn').style.display = 'none';
 
   if (siblings.length > 1) {
     // Show temp choice page
@@ -490,6 +589,7 @@ function startDrink(id) {
   headerSubtitle.textContent = currentDrink.category;
   renderStep();
   autoSpeak();
+  document.getElementById('soundBtn').style.display = 'none';
 }
 
 // ====== Render Step ======
@@ -539,31 +639,33 @@ function autoSpeak() {
 }
 
 function speakText(text) {
-  if (!('speechSynthesis' in window)) return;
-  stopSpeaking();
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'zh-CN';
-  utterance.rate = 0.85;
-  utterance.pitch = 1.1;
-  utterance.onstart = () => {
-    isSpeaking = true;
-    const ind = document.getElementById('speakIndicator');
-    ind.textContent = '🔊 朗读中...';
-    ind.classList.add('speaking');
-  };
-  utterance.onend = () => {
-    isSpeaking = false;
-    const ind = document.getElementById('speakIndicator');
-    ind.textContent = '';
-    ind.classList.remove('speaking');
-  };
-  utterance.onerror = () => {
-    isSpeaking = false;
-    const ind = document.getElementById('speakIndicator');
-    ind.textContent = '';
-    ind.classList.remove('speaking');
-  };
-  setTimeout(() => speechSynthesis.speak(utterance), 50);
+  if (!('speechSynthesis' in window) || soundMuted) return;
+  try {
+    stopSpeaking();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'zh-CN';
+    utterance.rate = 0.9;
+    utterance.pitch = voiceGender === 'male' ? 0.9 : 1.1;
+    utterance.onstart = () => {
+      isSpeaking = true;
+      const ind = document.getElementById('speakIndicator');
+      if (ind) { ind.textContent = '🔊 朗读中...'; ind.classList.add('speaking'); }
+    };
+    utterance.onend = () => {
+      isSpeaking = false;
+      const ind = document.getElementById('speakIndicator');
+      if (ind) { ind.textContent = ''; ind.classList.remove('speaking'); }
+    };
+    utterance.onerror = (e) => {
+      isSpeaking = false;
+      const ind = document.getElementById('speakIndicator');
+      if (ind) { ind.textContent = ''; ind.classList.remove('speaking'); }
+      console.warn('Speech synthesis error:', e);
+    };
+    speechSynthesis.speak(utterance);
+  } catch (e) {
+    console.warn('Speech synthesis not available:', e);
+  }
 }
 
 function stopSpeaking() {
@@ -620,6 +722,7 @@ function goHome() {
   headerSubtitle.textContent = '';
   backBtn.style.display = 'none';
   addBtn.style.display = 'block';
+  document.getElementById('soundBtn').style.display = 'block';
   searchInput.value = '';
   renderDrinkList(drinks);
 }
@@ -656,7 +759,6 @@ function showAddPage() {
   editSteps = [{ icon: '🍵', title: '', desc: '', image: null }];
   selectedIcon = '🧋';
   document.getElementById('editName').value = '';
-  document.getElementById('editIntro').value = '';
   document.getElementById('editCategory').value = '';
   buildIconPicker();
   renderStepEdits();
@@ -673,7 +775,6 @@ function editDrink(id) {
   editSteps = JSON.parse(JSON.stringify(drink.steps));
   selectedIcon = drink.icon;
   document.getElementById('editName').value = drink.name;
-  document.getElementById('editIntro').value = drink.intro || '';
   document.getElementById('editCategory').value = drink.category;
   buildIconPicker();
   renderStepEdits();
@@ -698,16 +799,10 @@ function renderStepEdits() {
         <span class="step-edit-num">步骤 ${i + 1}</span>
         <button class="step-edit-delete" onclick="deleteStep(${i})">删除</button>
       </div>
-      <div class="edit-label">图标</div>
-      <div class="icon-picker" id="stepIconPicker${i}">${ICONS.map(icon => `<div class="icon-option${s.icon === icon ? ' selected' : ''}" onclick="selectStepIcon(${i},'${icon}')">${icon}</div>`).join('')}</div>
-      <input type="text" class="edit-input" placeholder="步骤标题" value="${escHtml(s.title)}" onchange="editSteps[${i}].title=this.value">
+      <div class="edit-label">容器</div>
+      <input type="text" class="edit-input" placeholder="例如：雪克杯、量杯、冷饮杯" value="${escHtml(s.title)}" onchange="editSteps[${i}].title=this.value">
+      <div class="edit-label">步骤说明</div>
       <input type="text" class="edit-input" placeholder="详细步骤说明（文字）" value="${escHtml(s.desc)}" onchange="editSteps[${i}].desc=this.value">
-      <div class="img-upload-box" id="imgBox${i}">
-        <input type="file" accept="image/*" onchange="handleImageUpload(${i},this.files[0])">
-        <div class="img-upload-hint" id="imgHint${i}">📷 点击上传图片（可选）</div>
-        <img class="img-upload-preview" id="imgPreview${i}" src="${s.image || ''}" alt="">
-        <button class="img-remove-btn${s.image ? ' visible' : ''}" id="imgRemove${i}" onclick="event.stopPropagation();removeStepImage(${i})">移除图片</button>
-      </div>
     </div>
   `).join('');
 }
@@ -768,8 +863,8 @@ function deleteStep(index) {
 
 function saveDrink() {
   const name = document.getElementById('editName').value.trim();
-  const intro = document.getElementById('editIntro').value.trim();
   const category = document.getElementById('editCategory').value.trim() || '自选';
+
 
   if (!name) { showToast('请输入饮品名称'); return; }
 
@@ -777,11 +872,12 @@ function saveDrink() {
   const validSteps = editSteps.filter(s => s.title.trim() || s.desc.trim());
   if (validSteps.length === 0) { showToast('请至少填写 1 个步骤'); return; }
 
+
   const drink = {
     id: editMode === 'edit' ? currentDrink.id : 'custom-' + Date.now(),
     name,
     category,
-    intro,
+    intro: '',
     icon: selectedIcon,
     steps: editSteps.filter(s => s.title.trim() || s.desc.trim())
   };
@@ -896,6 +992,52 @@ function importDrinks(file) {
     }
   };
   reader.readAsText(file);
+}
+
+// ====== Sound Settings ======
+function toggleSound() {
+  document.getElementById('soundOverlay').classList.add('active');
+  document.getElementById('btnVoiceFemale').classList.toggle('active', voiceGender === 'female');
+  document.getElementById('btnVoiceMale').classList.toggle('active', voiceGender === 'male');
+  document.getElementById('btnSoundMute').textContent = soundMuted ? '🔇 关闭朗读' : '🔊 开启朗读';
+  document.getElementById('btnSoundMute').style.background = soundMuted ? '#8D6E63' : 'var(--tea-green)';
+}
+
+function closeSoundMenu() {
+  document.getElementById('soundOverlay').classList.remove('active');
+}
+
+function setVoice(g) {
+  voiceGender = g;
+  localStorage.setItem('bubble-tea-voice', g);
+  document.getElementById('btnVoiceFemale').classList.toggle('active', g === 'female');
+  document.getElementById('btnVoiceMale').classList.toggle('active', g === 'male');
+  // Preview with conservative pitch to ensure browser compatibility
+  if (!soundMuted) {
+    try {
+      speakText(g === 'female' ? '女声已切换' : '男声已切换');
+    } catch (e) {
+      console.warn('Speech synthesis not available:', e);
+    }
+  }
+}
+
+function toggleSoundMute() {
+  soundMuted = !soundMuted;
+  localStorage.setItem('bubble-tea-sound-muted', soundMuted);
+  updateSoundBtn();
+  closeSoundMenu();
+  if (soundMuted) {
+    try { speakText('朗读已关闭'); } catch (e) {}
+  } else {
+    try { speakText('朗读已开启'); } catch (e) {}
+  }
+}
+
+function updateSoundBtn() {
+  const btn = document.getElementById('soundBtn');
+  btn.textContent = soundMuted ? '🔇' : '🔊';
+  btn.classList.toggle('muted', soundMuted);
 }
 
 // ====== Start ======
