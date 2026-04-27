@@ -287,20 +287,6 @@
   </div>
 </div>
 
-<!-- Sound Toggle Overlay -->
-<div class="confirm-overlay" id="soundOverlay">
-  <div class="confirm-box">
-    <div class="confirm-title">🔊 声音设置</div>
-    <div class="confirm-msg" style="margin-bottom:16px;">选择朗读音色</div>
-    <div class="confirm-btns" style="flex-direction:column;gap:8px;">
-      <button class="confirm-yes" id="btnVoiceFemale" style="background:var(--boba-brown);" onclick="setVoice('female')">👩 女声</button>
-      <button class="confirm-yes" id="btnVoiceMale" style="background:#8D6E63;" onclick="setVoice('male')">👨 男声</button>
-      <button class="confirm-yes" style="background:var(--tea-green);" onclick="toggleSoundMute()" id="btnSoundMute">🔊 开启朗读</button>
-      <button class="confirm-no" onclick="closeSoundMenu()">关闭</button>
-    </div>
-  </div>
-</div>
-
 <!-- Confirm Dialog -->
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
@@ -1022,41 +1008,12 @@ function importDrinks(file) {
 }
 
 // ====== Sound Settings ======
+// ====== Sound Toggle ======
 function toggleSound() {
-  document.getElementById('soundOverlay').classList.add('active');
-  document.getElementById('btnVoiceFemale').classList.toggle('active', voiceGender === 'female');
-  document.getElementById('btnVoiceMale').classList.toggle('active', voiceGender === 'male');
-  document.getElementById('btnSoundMute').textContent = soundMuted ? '🔇 关闭朗读' : '🔊 开启朗读';
-  document.getElementById('btnSoundMute').style.background = soundMuted ? '#8D6E63' : 'var(--tea-green)';
-}
-
-function closeSoundMenu() {
-  document.getElementById('soundOverlay').classList.remove('active');
-}
-
-function setVoice(g) {
-  voiceGender = g;
-  localStorage.setItem('bubble-tea-voice', g);
-  document.getElementById('btnVoiceFemale').classList.toggle('active', g === 'female');
-  document.getElementById('btnVoiceMale').classList.toggle('active', g === 'male');
-  // Preview with conservative pitch to ensure browser compatibility
-  if (!soundMuted) {
-    try {
-      speakText(g === 'female' ? '女声已切换' : '男声已切换');
-    } catch (e) {
-      console.warn('Speech synthesis not available:', e);
-    }
-  }
-}
-
-function toggleSoundMute() {
   soundMuted = !soundMuted;
   localStorage.setItem('bubble-tea-sound-muted', soundMuted);
   updateSoundBtn();
-  closeSoundMenu();
-  if (soundMuted) {
-    try { speakText('朗读已关闭'); } catch (e) {}
-  } else {
+  if (!soundMuted) {
     try { speakText('朗读已开启'); } catch (e) {}
   }
 }
@@ -1064,7 +1021,6 @@ function toggleSoundMute() {
 function updateSoundBtn() {
   const btn = document.getElementById('soundBtn');
   btn.textContent = soundMuted ? '🔇' : '🔊';
-  btn.classList.toggle('muted', soundMuted);
 }
 
 // ====== Start ======
