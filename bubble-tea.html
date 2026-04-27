@@ -645,7 +645,28 @@ function speakText(text) {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'zh-CN';
     utterance.rate = 0.9;
-    utterance.pitch = voiceGender === 'male' ? 0.9 : 1.1;
+    
+    // Try to find a voice that matches the gender preference
+    const voices = speechSynthesis.getVoices();
+    const zhVoices = voices.filter(v => v.lang && v.lang.includes('zh'));
+    
+    if (zhVoices.length > 0) {
+      // Try to find a voice matching gender preference
+      let chosen = null;
+      if (voiceGender === 'male') {
+        chosen = zhVoices.find(v => /male|男/i.test(v.name));
+      } else {
+        chosen = zhVoices.find(v => /female|女|female/i.test(v.name));
+      }
+      // Fallback to any zh voice if gender match not found
+      chosen = chosen || zhVoices[0];
+      utterance.voice = chosen;
+      utterance.pitch = 1.0; // Use voice's natural pitch
+    } else {
+      // No zh voices available, use pitch fallback
+      utterance.pitch = voiceGender === 'male' ? 0.85 : 1.1;
+    }
+    
     utterance.onstart = () => {
       isSpeaking = true;
       const ind = document.getElementById('speakIndicator');
@@ -662,10 +683,16 @@ function speakText(text) {
       if (ind) { ind.textContent = ''; ind.classList.remove('speaking'); }
       console.warn('Speech synthesis error:', e);
     };
+    
     speechSynthesis.speak(utterance);
   } catch (e) {
-    console.warn('Speech synthesis not available:', e);
+    console.warn('Speech synthesis error:', e);
   }
+}
+
+// Ensure voices are loaded (some browsers load asynchronously)
+if ('speechSynthesis' in window) {
+  speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
 }
 
 function stopSpeaking() {
