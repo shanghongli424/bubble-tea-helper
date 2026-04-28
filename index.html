@@ -151,6 +151,7 @@
     .step-card { background: var(--card-bg); border-radius: 20px; padding: 32px 24px; text-align: center; box-shadow: var(--shadow); margin-bottom: 24px; }
     .step-icon { font-size: 72px; margin-bottom: 16px; display: block; animation: stepBounce 0.4s ease-out; }
     @keyframes stepBounce { 0% { transform: scale(0.7); opacity: 0; } 60% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+    .step-container { display: inline-block; background: var(--caramel); color: white; font-size: 13px; font-weight: 700; padding: 6px 16px; border-radius: 20px; margin-bottom: 12px; letter-spacing: 1px; }
     .step-number { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--text-secondary); margin-bottom: 8px; font-weight: 700; }
     .step-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; color: var(--boba-brown); }
     .step-desc { font-size: 16px; line-height: 1.7; color: var(--text-primary); text-align: left; background: var(--bg); border-radius: 12px; padding: 16px; min-height: 80px; }
@@ -270,6 +271,7 @@
   <div class="step-page">
     <div class="progress-bar" id="progressBar"></div>
     <div class="step-card">
+      <div class="step-container" id="stepContainer">冷饮杯</div>
       <div class="step-number" id="stepNumber">第 1 步</div>
       <div class="step-desc" id="stepDesc" style="font-size: 18px; min-height: 120px;">步骤描述</div>
       <img class="step-image" id="stepImage" src="" alt="">
@@ -310,6 +312,7 @@
 
     <div class="edit-section">
       <div class="edit-section-title">📝 调制步骤 <span id="stepCount" style="font-weight:400;color:var(--text-light);font-size:13px;"></span></div>
+      <div style="background:var(--bg);padding:10px 14px;border-radius:10px;margin-bottom:14px;font-size:13px;color:var(--text-secondary);">💡 提示：同一容器的操作合并为一个步骤，如"雪克杯"里加糖浆+茶汤+摇匀</div>
       <div id="stepEditList"></div>
       <button class="btn-add-step" id="addStepBtn" onclick="addStep()">＋ 添加步骤</button>
     </div>
@@ -351,10 +354,10 @@
 <script defer>
 // ====== Default Data ======
 const DEFAULT_DRINKS = [
-  {id:"yang-qing-mo-li-cold",name:"椰青茉莉",category:"椰青系列",intro:"冷饮",icon:"🥥",steps:[{icon:"📝",title:"第1步",desc:"冷饮杯加爆爆珠2勺"},{icon:"📝",title:"第2步",desc:"中杯加标准糖浆25，大杯加标准糖浆30"},{icon:"📝",title:"第3步",desc:"中杯加椰子水150毫升，大杯加180毫升"},{icon:"📝",title:"第4步",desc:"搅匀，加冰块"},{icon:"📝",title:"第5步",desc:"中杯加茉莉茶汤100毫升，大杯加120毫升，检查出餐"}]},
-  {id:"hong-cha-bing-ye-cold",name:"红茶冰椰",category:"椰青系列",intro:"冷饮",icon:"🥥",steps:[{icon:"📝",title:"第1步",desc:"中杯加标准糖浆15，大杯加标准糖浆20"},{icon:"📝",title:"第2步",desc:"中杯加椰子水200毫升，大杯加250毫升"},{icon:"📝",title:"第3步",desc:"搅匀，加冰块"},{icon:"📝",title:"第4步",desc:"中杯加红茶汤100毫升，大杯加125毫升"},{icon:"📝",title:"第5步",desc:"少冰补水，检查出餐"}]},
-  {id:"lu-ye-shen-xian-shui-cold",name:"绿野神仙水",category:"椰青系列",intro:"冷饮",icon:"🥥",steps:[{icon:"📝",title:"第1步",desc:"量杯加4克抹茶粉，加50毫升热水搅匀"},{icon:"📝",title:"第2步",desc:"中杯加糖浆15，大杯加糖浆20"},{icon:"📝",title:"第3步",desc:"中杯加椰子水200毫升，椰子水250毫升"},{icon:"📝",title:"第4步",desc:"搅匀，加冰块"},{icon:"📝",title:"第5步",desc:"量杯中的抹茶水沿冰块倒入出品杯，检查出餐"}]},
-  {id:"ma-tao-bao-zhu-ye-qing-shui-cold",name:"马蹄爆珠椰青水",category:"椰青系列",intro:"冷饮",icon:"🥥",steps:[{icon:"📝",title:"第1步",desc:"冷饮杯加爆爆珠2勺"},{icon:"📝",title:"第2步",desc:"中杯加糖浆15，大杯加糖浆20"},{icon:"📝",title:"第3步",desc:"中杯加椰子水250毫升，大杯加300毫升"},{icon:"📝",title:"第4步",desc:"搅匀，加冰块，少冰补水，检查出餐"}]},
+  {id:"yang-qing-mo-li-cold",name:"椰青茉莉",category:"椰青系列",intro:"冷饮",icon:"🥥",steps:[{icon:"🥥",title:"冷饮杯",desc:"加爆爆珠2勺 + 糖浆25/30 + 椰子水150/180毫升 + 茉莉茶汤100/120毫升，搅匀"},{icon:"🧊",title:"加冰",desc:"加冰块至满杯，少冰需补水，检查出餐"}]},
+  {id:"hong-cha-bing-ye-cold",name:"红茶冰椰",category:"椰青系列",intro:"冷饮",icon:"🥥",steps:[{icon:"🥥",title:"冷饮杯",desc:"加糖浆15/20 + 椰子水200/250毫升 + 红茶汤100/125毫升，搅匀"},{icon:"🧊",title:"加冰",desc:"少冰补水，检查出餐"}]},
+  {id:"lu-ye-shen-xian-shui-cold",name:"绿野神仙水",category:"椰青系列",intro:"冷饮",icon:"🥥",steps:[{icon:"🥛",title:"量杯",desc:"加4克抹茶粉 + 50毫升热水搅匀备用"},{icon:"🥥",title:"冷饮杯",desc:"加糖浆15/20 + 椰子水200/250毫升，搅匀"},{icon:"🧊",title:"加冰出品",desc:"沿冰块倒入抹茶水，加冰块至满杯，少冰补水，检查出餐"}]},
+  {id:"ma-tao-bao-zhu-ye-qing-shui-cold",name:"马蹄爆珠椰青水",category:"椰青系列",intro:"冷饮",icon:"🥥",steps:[{icon:"🥥",title:"冷饮杯",desc:"加爆爆珠2勺 + 糖浆15/20 + 椰子水250/300毫升，搅匀"},{icon:"🧊",title:"加冰",desc:"加冰块，少冰补水，检查出餐"}]},,
   {id:"mo-cha-ai-le-bing-cold",name:"抹茶爱乐冰",category:"爱乐冰系列",intro:"冷饮",icon:"🧊",steps:[{icon:"📝",title:"第1步",desc:"中杯装320克冰块，大杯装380克冰块放进冰沙机"},{icon:"📝",title:"第2步",desc:"中杯加糖浆10，大杯加15进冰沙机"},{icon:"📝",title:"第3步",desc:"中杯加1.8勺抹茶粉，大杯加2.5勺进冰沙机"},{icon:"📝",title:"第4步",desc:"中杯加150毫升特调乳，大杯加200毫升特调乳进冰沙机"},{icon:"📝",title:"第5步",desc:"冰沙机搅拌后，用长勺辅助倒进冷饮杯。挤2.5圈奶油，检查出餐"}]},
   {id:"ke-ke-ai-le-bing-cold",name:"可可爱乐冰",category:"爱乐冰系列",intro:"冷饮",icon:"🧊",steps:[{icon:"📝",title:"第1步",desc:"中杯装320克冰块，大杯装380克冰块放进冰沙机"},{icon:"📝",title:"第2步",desc:"中杯加糖浆20，大杯加25进冰沙机"},{icon:"📝",title:"第3步",desc:"中杯加1.5勺可可粉，大杯加2勺进冰沙机"},{icon:"📝",title:"第4步",desc:"中杯加150毫升特调乳，大杯加280毫升特调乳进冰沙机"},{icon:"📝",title:"第5步",desc:"中杯加巧克力酱15克，大杯加巧克力酱18克进冰沙机"},{icon:"📝",title:"第6步",desc:"冰沙机搅拌后，用长勺辅助倒进冷饮杯。挤2.5圈奶油，检查出餐"}]},
   {id:"lan-mei-ai-le-bing-cold",name:"蓝莓爱乐冰",category:"爱乐冰系列",intro:"冷饮",icon:"🧊",steps:[{icon:"📝",title:"第1步",desc:"中杯装320克冰块，大杯装380克冰块放进冰沙机"},{icon:"📝",title:"第2步",desc:"中杯加糖浆20，大杯加35进冰沙机"},{icon:"📝",title:"第3步",desc:"中杯加3克原味粉，大杯加5克进冰沙机"},{icon:"📝",title:"第4步",desc:"中杯加150毫升特调乳，大杯加200毫升特调乳进冰沙机"},{icon:"📝",title:"第5步",desc:"中杯加35克蓝莓酱，大杯加45克进冰沙机"},{icon:"📝",title:"第6步",desc:"冰沙机搅拌后，用长勺辅助倒进冷饮杯。挤2.5圈奶油，检查出餐"}]},
@@ -363,7 +366,7 @@ const DEFAULT_DRINKS = [
   {id:"lan-mei-su-da-cold",name:"蓝莓苏打",category:"气泡水系列",intro:"冷饮",icon:"🫧",steps:[{icon:"📝",title:"第1步",desc:"雪克杯加入糖浆30，蓝莓酱40克，加少量冰块摇"},{icon:"📝",title:"第2步",desc:"倒入大杯冷饮杯，倒满一瓶苏打水"},{icon:"📝",title:"第3步",desc:"加2片柠檬，加冰补满，少冰补水"}]},
   {id:"xian-cheng-su-da-cold",name:"鲜橙苏打",category:"气泡水系列",intro:"冷饮",icon:"🫧",steps:[{icon:"📝",title:"第1步",desc:"雪克杯加入糖浆30，橙子酱3勺，加少量冰块摇"},{icon:"📝",title:"第2步",desc:"倒入大杯冷饮杯，倒满一瓶苏打水"},{icon:"📝",title:"第3步",desc:"加2片鲜橙，加冰补满，少冰补水"}]},
   {id:"pu-tao-su-da-cold",name:"葡萄苏打",category:"气泡水系列",intro:"冷饮",icon:"🫧",steps:[{icon:"📝",title:"第1步",desc:"雪克杯加入糖浆40，葡萄酱3勺，加少量冰块摇"},{icon:"📝",title:"第2步",desc:"倒入大杯冷饮杯，倒满一瓶苏打水"},{icon:"📝",title:"第3步",desc:"加2片柠檬，加冰补满，少冰补水"}]},
-  {id:"zha-zha-ning-meng-cha-cold",name:"渣渣柠檬茶",category:"手打柠檬茶系列",intro:"冷饮",icon:"🍋",steps:[{icon:"📝",title:"第1步",desc:"中杯加4片柠檬，大杯加6片。柠檬放进雪克杯，用柠檬锤快速大力暴打柠檬"},{icon:"📝",title:"第2步",desc:"中杯加糖浆50，大杯加糖浆70。少冰补5，其他糖量逐级减5"},{icon:"📝",title:"第3步",desc:"中杯加红茶汤200毫升，大杯加300毫升。"},{icon:"📝",title:"第4步",desc:"加冰块，摇晃均匀"},{icon:"📝",title:"第5步",desc:"倒入出品杯，少冰需补水，检查再出餐"}]},
+  {id:"zha-zha-ning-meng-cha-cold",name:"渣渣柠檬茶",category:"手打柠檬茶系列",intro:"冷饮",icon:"🍋",steps:[{icon:"🍋",title:"雪克杯",desc:"中杯4片/大杯6片柠檬，用柠檬锤大力暴打出汁 + 加糖浆50/70 + 红茶汤200/300毫升 + 少冰补5，其他糖量逐级减5，摇晃均匀"},{icon:"🥤",title:"出品杯",desc:"倒入，少冰需补水，检查出餐"}]},,
   {id:"lan-mei-wu-long-cha-cold",name:"蓝莓乌龙茶",category:"手打柠檬茶系列",intro:"冷饮",icon:"🍋",steps:[{icon:"📝",title:"第1步",desc:"用雪克杯加2片黄柠檬，用锤压出汁"},{icon:"📝",title:"第2步",desc:"中杯加蓝莓酱30克，大杯加蓝莓酱45克"},{icon:"📝",title:"第3步",desc:"中杯加标准糖浆15，大杯加标准糖25，其他糖量逐级减5"},{icon:"📝",title:"第4步",desc:"中杯加乌龙茶汤200毫升，大杯加乌龙茶汤300毫升，然后加冰块一起摇"},{icon:"📝",title:"第5步",desc:"倒入出品杯，少冰需补水，检查再出餐"}]},
   {id:"mo-li-bing-ning-cha-cold",name:"茉莉冰柠茶",category:"手打柠檬茶系列",intro:"冷饮",icon:"🍋",steps:[{icon:"📝",title:"第1步",desc:"中杯加4片柠檬，大杯加6片。柠檬放进雪克杯，用柠檬锤快速大力暴打柠檬"},{icon:"📝",title:"第2步",desc:"中杯加糖浆50，大杯加糖浆70。少冰补5，其他糖量逐级减5"},{icon:"📝",title:"第3步",desc:"中杯加茉莉茶汤200毫升，大杯加300毫升。"},{icon:"📝",title:"第4步",desc:"加冰块，摇晃均匀"},{icon:"📝",title:"第5步",desc:"倒入出品杯，少冰需补水，检查再出餐"}]},
   {id:"bo-bo-nai-cha-cold",name:"啵啵奶茶",category:"奶茶系列",intro:"冷饮",icon:"🧋",steps:[{icon:"📝",title:"第1步",desc:"冷饮杯加脆波波2勺备用"},{icon:"📝",title:"第2步",desc:"雪克杯加入特调乳100毫升"},{icon:"📝",title:"第3步",desc:"加入标准糖浆30，其他糖量逐级减5"},{icon:"📝",title:"第4步",desc:"加红茶200毫升，然后加冰块一起摇"},{icon:"📝",title:"第5步",desc:"倒入出品杯，少冰需补水，检查再出餐"}]},
@@ -617,6 +620,9 @@ function renderStep() {
   const step = currentDrink.steps[currentStep];
   const total = currentDrink.steps.length;
 
+  // 容器名称显示在顶部
+  const containerName = step.title && step.title.trim() ? step.title.trim() : '制作中';
+  document.getElementById('stepContainer').textContent = containerName;
   document.getElementById('stepNumber').textContent = `第 ${currentStep + 1} / ${total} 步`;
   document.getElementById('stepDesc').textContent = step.desc;
 
@@ -843,13 +849,14 @@ function renderStepEdits() {
   list.innerHTML = editSteps.map((s, i) => `
     <div class="step-edit-card" data-index="${i}">
       <div class="step-edit-header">
-        <span class="step-edit-num">步骤 ${i + 1}</span>
+        <span class="step-edit-num">📦 步骤 ${i + 1}</span>
         <button class="step-edit-delete" onclick="deleteStep(${i})">删除</button>
       </div>
-      <div class="edit-label">容器</div>
-      <input type="text" class="edit-input" placeholder="例如：雪克杯、量杯、冷饮杯" value="${escHtml(s.title)}" onchange="editSteps[${i}].title=this.value">
-      <div class="edit-label">步骤说明</div>
-      <input type="text" class="edit-input" placeholder="详细步骤说明（文字）" value="${escHtml(s.desc)}" onchange="editSteps[${i}].desc=this.value">
+      <div style="background:var(--caramel);color:white;padding:10px 14px;border-radius:10px;margin-bottom:12px;font-size:14px;font-weight:500;">
+        🫗 容器：<input type="text" style="background:transparent;border:none;color:white;font-size:14px;font-weight:700;outline:none;width:60%;" placeholder="例如：雪克杯、量杯、冷饮杯、出品杯" value="${escHtml(s.title)}" onchange="editSteps[${i}].title=this.value">
+      </div>
+      <div class="edit-label">📝 这一步做什么</div>
+      <input type="text" class="edit-input" placeholder="合并同一容器的操作，写清楚加什么、加多少" value="${escHtml(s.desc)}" onchange="editSteps[${i}].desc=this.value">
     </div>
   `).join('');
 }
