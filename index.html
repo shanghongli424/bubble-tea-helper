@@ -463,14 +463,21 @@ function init() {
 function loadDrinks() {
   try {
     const saved = localStorage.getItem('bubble-tea-drinks');
-    if (saved) {
-      drinks = JSON.parse(saved);
+    if (saved && saved.length > 2) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        drinks = parsed;
+      } else {
+        drinks = JSON.parse(JSON.stringify(DEFAULT_DRINKS));
+        saveDrinks();
+      }
     } else {
       drinks = JSON.parse(JSON.stringify(DEFAULT_DRINKS));
       saveDrinks();
     }
   } catch (e) {
     drinks = JSON.parse(JSON.stringify(DEFAULT_DRINKS));
+    saveDrinks();
   }
 }
 
