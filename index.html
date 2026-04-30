@@ -354,40 +354,40 @@
 <script defer>
 // ====== Default Data ======
 const DEFAULT_DRINKS = [
-  {id:"椰青茉莉-cold",name:"椰青茉莉",category:"椰青系列",intro:"冷",icon:"🥥",steps:[{icon:"🥥",title:"冷饮杯",desc:"加爆爆珠2勺。"},{icon:"🥥",title:"中杯",desc:"加糖浆25，大杯加糖浆30。 + 加椰子水150毫升，大杯加180毫升。"},{icon:"🥥",title:"冷饮杯",desc:"搅匀，加冰块。"},{icon:"🥥",title:"中杯",desc:"加茉莉茶汤100毫升，大杯加120毫升。"},{icon:"🥥",title:"冷饮杯",desc:"检查出餐"}]},
-  {id:"红茶冰椰-cold",name:"红茶冰椰",category:"椰青系列",intro:"冷",icon:"🥥",steps:[{icon:"🥥",title:"中杯",desc:"加糖浆15，大杯加糖浆20。 + 加椰子水200毫升，大杯加250毫升。"},{icon:"🥥",title:"冷饮杯",desc:"搅匀，加冰块。"},{icon:"🥥",title:"中杯",desc:"加红茶汤100毫升，大杯加125毫升。"},{icon:"🥥",title:"冷饮杯",desc:"少冰补水，检查出餐"}]},
-  {id:"绿野神仙水-cold",name:"绿野神仙水",category:"椰青系列",intro:"冷",icon:"🥥",steps:[{icon:"🥥",title:"中杯",desc:"加糖浆15，大杯加糖浆20。 + 加椰子水200毫升，椰子水250毫升。"},{icon:"🥥",title:"冷饮杯",desc:"搅匀，加冰块。 + 加4克抹茶粉，加50毫升热水搅匀。 + 沿冰块倒入冷饮杯，检查出餐。"}]},
-  {id:"马蹄爆珠椰青水-cold",name:"马蹄爆珠椰青水",category:"椰青系列",intro:"冷",icon:"🥥",steps:[{icon:"🥥",title:"冷饮杯",desc:"加爆爆珠2勺。"},{icon:"🥥",title:"中杯",desc:"加糖浆15，大杯加糖浆20。 + 加椰子水250毫升，大杯加300毫升。"},{icon:"🥥",title:"冷饮杯",desc:"搅匀，加冰块，少冰补水，检查出餐。"}]},
-  {id:"抹茶爱乐冰-cold",name:"抹茶爱乐冰",category:"爱乐冰系列",intro:"冷",icon:"🧊",steps:[{icon:"🧊",title:"中杯",desc:"装320克冰块，大杯装380克冰块。 + 加糖浆10，大杯加15。 + 加1.8勺抹茶粉，大杯加2.5勺。 + 加150毫升特调乳，大杯加200毫升。"},{icon:"🧊",title:"冰沙机",desc:"冰沙机搅拌后，用长勺辅助倒进冷饮杯。 + 挤2.5圈奶油。 + 检查出餐。"}]},
-  {id:"可可爱乐冰-cold",name:"可可爱乐冰",category:"爱乐冰系列",intro:"冷",icon:"🧊",steps:[{icon:"🧊",title:"中杯",desc:"装320克冰块，大杯装380克冰块。 + 加糖浆20，大杯加25。 + 加1.5勺可可粉，大杯加2勺。 + 加150毫升特调乳，大杯加280毫升。"},{icon:"🧊",title:"冰沙机",desc:"冰沙机搅拌后，用长勺辅助倒进冷饮杯。 + 挤2.5圈奶油。 + 检查出餐。"}]},
-  {id:"蓝莓爱乐冰-cold",name:"蓝莓爱乐冰",category:"爱乐冰系列",intro:"冷",icon:"🧊",steps:[{icon:"🧊",title:"中杯",desc:"装320克冰块，大杯装380克冰块。 + 加糖浆20，大杯加35。 + 加3克原味粉，大杯加5克。 + 加3克原味粉，大杯加5克。 + 加35克蓝莓酱，大杯加45克。"},{icon:"🧊",title:"冰沙机",desc:"冰沙机搅拌后，用长勺辅助倒进冷饮杯。 + 挤2.5圈奶油。 + 检查出餐。"}]},
-  {id:"摩卡爱乐冰-cold",name:"摩卡爱乐冰",category:"爱乐冰系列",intro:"冷",icon:"🧊",steps:[{icon:"🧊",title:"冰沙机",desc:"装1杯冰块。"},{icon:"🧊",title:"中杯",desc:"加糖浆15，大杯加25。"},{icon:"🧊",title:"冰沙机",desc:"加入60毫升咖啡液。"},{icon:"🧊",title:"中杯",desc:"加70毫升特调乳，大杯加125毫升。 + 加30克巧克力酱，大杯加45克。"},{icon:"🧊",title:"冰沙机",desc:"冰沙机搅拌后，用长勺辅助倒进冷饮杯。 + 挤2.5圈奶油。 + 检查出餐。"}]},
-  {id:"柠檬苏打-cold",name:"柠檬苏打",category:"气泡水系列",intro:"冷",icon:"🫧",steps:[{icon:"🫧",title:"冷饮杯",desc:"加入糖浆60。 + 倒满一瓶苏打水，搅匀。 + 加2片柠檬，加冰补满，少冰补水。 + 检查出餐。"}]},
-  {id:"蓝莓苏打-cold",name:"蓝莓苏打",category:"气泡水系列",intro:"冷",icon:"🫧",steps:[{icon:"🫧",title:"雪克杯",desc:"加入糖浆30。 + 蓝莓酱40克，加少量冰块摇。 + 料倒入。 + 倒满一瓶苏打水。 + 加2片柠檬，加冰补满，少冰补水。 + 检查出餐。"}]},
-  {id:"鲜橙苏打-cold",name:"鲜橙苏打",category:"气泡水系列",intro:"冷",icon:"🫧",steps:[{icon:"🫧",title:"雪克杯",desc:"加入糖浆30。"},{icon:"🫧",title:"量杯",desc:"橙子酱3压，加少量杯块摇。"},{icon:"🫧",title:"雪克杯",desc:"料倒入。 + 倒满一瓶苏打水。 + 加2片鲜橙，加冰补满，少冰补水.4.检查出餐。"}]},
-  {id:"葡萄苏打-cold",name:"葡萄苏打",category:"气泡水系列",intro:"冷",icon:"🫧",steps:[{icon:"🫧",title:"雪克杯",desc:"加入糖浆40。"},{icon:"🫧",title:"量杯",desc:"葡萄酱3压，加少量杯块摇。"},{icon:"🫧",title:"雪克杯",desc:"料倒入。 + 倒满一瓶苏打水。 + 加2片柠檬，加冰补满，少冰补水。 + 检查出餐。"}]},
-  {id:"渣渣柠檬茶-cold",name:"渣渣柠檬茶",category:"手打柠檬茶系列",intro:"冷",icon:"🍋",steps:[{icon:"🍋",title:"中杯",desc:"加4片柠檬，大杯加6片。"},{icon:"🍋",title:"雪克杯",desc:"用柠檬锤快速大力暴打柠檬。"},{icon:"🍋",title:"中杯",desc:"加糖浆50，大杯加糖浆70。少冰补5，其他糖量逐级减5。 + 加红茶汤200毫升，大杯加300毫升。"},{icon:"🍋",title:"雪克杯",desc:"加冰块，摇晃均匀。 + 料倒入出品杯，少冰需补水。 + 检查再出餐。"}]},
-  {id:"蓝莓乌龙茶-cold",name:"蓝莓乌龙茶",category:"手打柠檬茶系列",intro:"冷",icon:"🍋",steps:[{icon:"🍋",title:"雪克杯",desc:"加2片黄柠檬，用锤压出汁。"},{icon:"🍋",title:"中杯",desc:"加蓝莓酱30克，大杯加蓝莓酱45克。 + 加标准糖浆15，大杯加标准糖25，其他糖量逐级减5。 + 中杯加乌龙茶汤200毫升，大杯加乌龙茶汤300毫升，然后加冰块一起摇。 雪克杯料倒入出品杯，少冰需补水，检查再出餐。"}]},
-  {id:"茉莉冰柠茶-cold",name:"茉莉冰柠茶",category:"手打柠檬茶系列",intro:"冷",icon:"🍋",steps:[{icon:"🍋",title:"中杯",desc:"加4片柠檬，大杯加6片。"},{icon:"🍋",title:"雪克杯",desc:"用柠檬锤快速大力暴打柠檬。"},{icon:"🍋",title:"中杯",desc:"加糖浆50，大杯加糖浆70，少冰补5，其他糖量逐级减5。 + 加茉莉茶汤200毫升，大杯加300毫升。"},{icon:"🍋",title:"雪克杯",desc:"加冰块，摇晃均匀。 雪克杯料倒入出品杯，少冰需补水，检查再出餐。"}]},
-  {id:"啵啵奶茶-cold",name:"啵啵奶茶",category:"奶茶系列",intro:"冷",icon:"🧋",steps:[{icon:"🧋",title:"雪克杯",desc:"加入特调乳100毫升。 + 加入标准糖浆30，其他糖量逐级减5。 + 加红茶200毫升，然后加冰块一起摇。 + 加脆波波2勺备用。 + 料倒入，少冰需补水，检查再出餐。"}]},
-  {id:"啵啵奶茶-hot",name:"啵啵奶茶",category:"奶茶系列",intro:"热",icon:"🧋",steps:[{icon:"🧋",title:"雪克杯",desc:"加入特调乳100毫升。 + 加入标准糖浆30，其他糖量逐级减5。 + 加红茶200毫升，然后蒸汽加热至55度。 + 加脆波波2勺备用。 + 料倒入，不满需补热水，检查再出餐。"}]},
-  {id:"美式咖啡-cold",name:"美式咖啡",category:"咖啡系列",intro:"冷",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液备用。 + 加满冰块，加200毫升直饮水。 + 倒入咖啡液，检查再出餐。"}]},
-  {id:"美式咖啡-hot",name:"美式咖啡",category:"咖啡系列",intro:"热",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液备用。 + 加八分满60度热水。 + 倒入咖啡液，检查再出餐"}]},
-  {id:"拿铁-cold",name:"拿铁",category:"咖啡系列",intro:"冰",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液备用。 + 加满冰块，加牛奶200毫升，顾客要求加糖，可加15。 + 倒入咖啡液，检查再出餐。"}]},
-  {id:"拿铁-hot",name:"拿铁",category:"咖啡系列",intro:"热",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液备用。 + 倒入牛奶200毫升，蒸汽棒打发加热。"},{icon:"☕",title:"奶缸",desc:"料倒入。"},{icon:"☕",title:"咖啡机",desc:"倒入咖啡液，检查再出餐。"}]},
-  {id:"生椰拿铁-cold",name:"生椰拿铁",category:"咖啡系列",intro:"冷",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液备用。 + 加满冰块，加厚椰乳200毫升，顾客要求加糖，可加15。 + 倒入咖啡液，检查再出餐。"}]},
-  {id:"生椰拿铁-hot",name:"生椰拿铁",category:"咖啡系列",intro:"热",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液备用。 倒入厚椰乳200毫升，蒸汽棒打发加热。"},{icon:"☕",title:"奶缸",desc:"料倒入。"},{icon:"☕",title:"咖啡机",desc:"倒入咖啡液，检查再出餐。"}]},
-  {id:"焦糖拿铁-cold",name:"焦糖拿铁",category:"咖啡系列",intro:"冷",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液。 + 咖啡液加入标准焦糖浆15，半糖10，搅匀备用。 + 加满冰块，加牛奶200毫升。 + 倒入混合焦糖浆咖啡液，检查再出餐。"}]},
-  {id:"焦糖拿铁-hot",name:"焦糖拿铁",category:"咖啡系列",intro:"热",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液。 + 咖啡液加入标准焦糖浆15，半糖10，搅匀备用。 倒入牛奶200毫升，蒸汽棒打发加热。"},{icon:"☕",title:"奶缸",desc:"料倒入。"},{icon:"☕",title:"咖啡机",desc:"倒入混合焦糖浆咖啡液，检查再出餐。"}]},
-  {id:"香草拿铁-cold",name:"香草拿铁",category:"咖啡系列",intro:"冷",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液。 + 咖啡液加入标准香草糖浆15，半糖10，搅匀备用。 + 加满冰块，加牛奶200毫升。 + 倒入混合焦糖浆咖啡液，检查再出餐"}]},
-  {id:"香草拿铁-hot",name:"香草拿铁",category:"咖啡系列",intro:"热",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液。 + 咖啡液加入标准香草糖浆15，半糖10，搅匀备用。 倒入牛奶200毫升，蒸汽棒打发加热。"},{icon:"☕",title:"奶缸",desc:"料倒入。"},{icon:"☕",title:"咖啡机",desc:"倒入混合香草糖浆咖啡液，检查再出餐。"}]},
-  {id:"香橙美式-cold",name:"香橙美式",category:"咖啡系列",intro:"冷",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液备用。 加入橙子酱2压，糖浆15，过滤水200毫升，搅匀。"},{icon:"☕",title:"雪克杯",desc:"料倒入。"},{icon:"☕",title:"咖啡机",desc:"咖啡液倒入。 + 两片鲜橙装饰，检查再出餐。"}]},
-  {id:"巧克力拿铁-cold",name:"巧克力拿铁",category:"无咖啡因拿铁系列",intro:"冷",icon:"🥛",steps:[{icon:"🥛",title:"中杯",desc:"加20克巧克力酱，50毫升热水，搅匀。大杯加30克巧克力酱，75毫升热水，搅匀。 + 倒入特调200毫升，加50毫升直饮水。大杯加300毫升，加75毫升直饮水。"},{icon:"🥛",title:"量杯",desc:"加冰块。 + 料倒入，检查出餐。"}]},
-  {id:"巧克力拿铁-hot",name:"巧克力拿铁",category:"无咖啡因拿铁系列",intro:"热",icon:"🥛",steps:[{icon:"🥛",title:"量杯",desc:"加20克巧克力酱，50毫升热水，搅匀。大杯加30克巧克力酱，75毫升热水，搅匀。"},{icon:"🥛",title:"中杯",desc:"倒入特调200毫升，大杯加300毫升。"},{icon:"🥛",title:"量杯",desc:"蒸汽棒打发加热。 + 调料倒入，检查出餐。"}]},
-  {id:"抹茶拿铁-cold",name:"抹茶拿铁",category:"无咖啡因拿铁系列",intro:"冷",icon:"🥛",steps:[{icon:"🥛",title:"量杯",desc:"加1.5勺抹茶粉，50毫升热水，搅匀。大杯加2勺抹茶粉，66毫升热水，搅匀。"},{icon:"🥛",title:"中杯",desc:"倒入特调200毫升，加50毫升直饮水。大杯加300毫升，加75毫升直饮水。"},{icon:"🥛",title:"量杯",desc:"加冰块。 + 调料倒入，检查出餐。"}]},
-  {id:"抹茶拿铁-hot",name:"抹茶拿铁",category:"无咖啡因拿铁系列",intro:"热",icon:"🥛",steps:[{icon:"🥛",title:"量杯",desc:"加1.5勺抹茶粉，50毫升热水，搅匀。大杯加2勺抹茶粉，66毫升热水，搅匀。"},{icon:"🥛",title:"中杯",desc:"倒入特调200毫升，大杯加300毫升。"},{icon:"🥛",title:"量杯",desc:"蒸汽棒打发加热。 + 调料倒入，检查出餐。"}]}
+const DEFAULT_DRINKS = [
+  {id:"椰青茉莉-cold",name:"椰青茉莉",category:"椰青系列",intro:"冷",icon:"🥥",steps:[{icon:"🥥",title:"冷饮杯",desc:"加爆爆珠2勺。"},{icon:"🥥",title:"冷饮杯",desc:"中杯加糖浆25，大杯加糖浆30。"},{icon:"🥥",title:"冷饮杯",desc:"中杯加椰子水150毫升，大杯加180毫升。"},{icon:"🥥",title:"冷饮杯",desc:"搅匀，加冰块。"},{icon:"🥥",title:"冷饮杯",desc:"中杯加茉莉茶汤100毫升，大杯加120毫升。"},{icon:"🥥",title:"冷饮杯",desc:"检查出餐"}]}
+  {id:"红茶冰椰-cold",name:"红茶冰椰",category:"椰青系列",intro:"冷",icon:"🥥",steps:[{icon:"🥥",title:"冷饮杯",desc:"中杯加糖浆15，大杯加糖浆20。"},{icon:"🥥",title:"冷饮杯",desc:"中杯加椰子水200毫升，大杯加250毫升。"},{icon:"🥥",title:"冷饮杯",desc:"搅匀，加冰块。"},{icon:"🥥",title:"冷饮杯",desc:"中杯加红茶汤100毫升，大杯加125毫升。"},{icon:"🥥",title:"冷饮杯",desc:"少冰补水，检查出餐"}]}
+  {id:"绿野神仙水-cold",name:"绿野神仙水",category:"椰青系列",intro:"冷",icon:"🥥",steps:[{icon:"🥥",title:"冷饮杯",desc:"中杯加糖浆15，大杯加糖浆20。"},{icon:"🥥",title:"冷饮杯",desc:"中杯加椰子水200毫升，椰子水250毫升。"},{icon:"🥥",title:"冷饮杯",desc:"搅匀，加冰块。"}]}
+  {id:"马蹄爆珠椰青水-cold",name:"马蹄爆珠椰青水",category:"椰青系列",intro:"冷",icon:"🥥",steps:[{icon:"🥥",title:"冷饮杯",desc:"加爆爆珠2勺。"},{icon:"🥥",title:"冷饮杯",desc:"中杯加糖浆15，大杯加糖浆20。"},{icon:"🥥",title:"冷饮杯",desc:"中杯加椰子水250毫升，大杯加300毫升。"},{icon:"🥥",title:"冷饮杯",desc:"搅匀，加冰块，少冰补水，检查出餐。"}]}
+  {id:"抹茶爱乐冰-cold",name:"抹茶爱乐冰",category:"爱乐冰系列",intro:"冷",icon:"🧊",steps:[{icon:"🧊",title:"冰沙机",desc:"中杯装320克冰块，大杯装380克冰块。"},{icon:"🧊",title:"冰沙机",desc:"中杯加糖浆10，大杯加15。"},{icon:"🧊",title:"冰沙机",desc:"中杯加1.8勺抹茶粉，大杯加2.5勺。"},{icon:"🧊",title:"冰沙机",desc:"中杯加150毫升特调乳，大杯加200毫升。"}]}
+  {id:"可可爱乐冰-cold",name:"可可爱乐冰",category:"爱乐冰系列",intro:"冷",icon:"🧊",steps:[{icon:"🧊",title:"冰沙机",desc:"中杯装320克冰块，大杯装380克冰块。"},{icon:"🧊",title:"冰沙机",desc:"中杯加糖浆20，大杯加25。"},{icon:"🧊",title:"冰沙机",desc:"中杯加1.5勺可可粉，大杯加2勺。"},{icon:"🧊",title:"冰沙机",desc:"中杯加150毫升特调乳，大杯加280毫升。"},{icon:"🧊",title:"冰沙机",desc:"中杯加巧克力酱15克，大杯加巧克力酱18克。"}]}
+  {id:"蓝莓爱乐冰-cold",name:"蓝莓爱乐冰",category:"爱乐冰系列",intro:"冷",icon:"🧊",steps:[{icon:"🧊",title:"冰沙机",desc:"中杯装320克冰块，大杯装380克冰块。"},{icon:"🧊",title:"冰沙机",desc:"中杯加糖浆20，大杯加35。"},{icon:"🧊",title:"冰沙机",desc:"中杯加3克原味粉，大杯加5克。"},{icon:"🧊",title:"冰沙机",desc:"中杯加3克原味粉，大杯加5克。"},{icon:"🧊",title:"冰沙机",desc:"中杯加35克蓝莓酱，大杯加45克。"}]}
+  {id:"摩卡爱乐冰-cold",name:"摩卡爱乐冰",category:"爱乐冰系列",intro:"冷",icon:"🧊",steps:[{icon:"🧊",title:"冰沙机",desc:"装1杯冰块。"},{icon:"🧊",title:"冰沙机",desc:"中杯加糖浆15，大杯加25。"},{icon:"🧊",title:"冰沙机",desc:"加入60毫升咖啡液。"},{icon:"🧊",title:"冰沙机",desc:"中杯加70毫升特调乳，大杯加125毫升。"},{icon:"🧊",title:"冰沙机",desc:"中杯加30克巧克力酱，大杯加45克。"}]}
+  {id:"柠檬苏打-cold",name:"柠檬苏打",category:"气泡水系列",intro:"冷",icon:"🫧",steps:[{icon:"🫧",title:"冷饮杯",desc:"加入糖浆60。"},{icon:"🫧",title:"冷饮杯",desc:"倒满一瓶苏打水，搅匀。"},{icon:"🫧",title:"冷饮杯",desc:"加2片柠檬，加冰补满，少冰补水。"},{icon:"🫧",title:"冷饮杯",desc:"检查出餐。"}]}
+  {id:"蓝莓苏打-cold",name:"蓝莓苏打",category:"气泡水系列",intro:"冷",icon:"🫧",steps:[{icon:"🫧",title:"雪克杯",desc:"加入糖浆30。"},{icon:"🫧",title:"雪克杯",desc:"蓝莓酱40克，加少量冰块摇。"}]}
+  {id:"鲜橙苏打-cold",name:"鲜橙苏打",category:"气泡水系列",intro:"冷",icon:"🫧",steps:[{icon:"🫧",title:"雪克杯",desc:"加入糖浆30。"},{icon:"🫧",title:"量杯",desc:"橙子酱3压，加少量杯块摇。"}]}
+  {id:"葡萄苏打-cold",name:"葡萄苏打",category:"气泡水系列",intro:"冷",icon:"🫧",steps:[{icon:"🫧",title:"雪克杯",desc:"加入糖浆40。"},{icon:"🫧",title:"量杯",desc:"葡萄酱3压，加少量杯块摇。"}]}
+  {id:"渣渣柠檬茶-cold",name:"渣渣柠檬茶",category:"手打柠檬茶系列",intro:"冷",icon:"🍋",steps:[{icon:"🍋",title:"雪克杯",desc:"中杯加4片柠檬，大杯加6片。"},{icon:"🍋",title:"雪克杯",desc:"用柠檬锤快速大力暴打柠檬。"},{icon:"🍋",title:"雪克杯",desc:"中杯加糖浆50，大杯加糖浆70。少冰补5，其他糖量逐级减5。"},{icon:"🍋",title:"雪克杯",desc:"中杯加红茶汤200毫升，大杯加300毫升。"},{icon:"🍋",title:"雪克杯",desc:"加冰块，摇晃均匀。"}]}
+  {id:"蓝莓乌龙茶-cold",name:"蓝莓乌龙茶",category:"手打柠檬茶系列",intro:"冷",icon:"🍋",steps:[{icon:"🍋",title:"雪克杯",desc:"加2片黄柠檬，用锤压出汁。"},{icon:"🍋",title:"雪克杯",desc:"中杯加蓝莓酱30克，大杯加蓝莓酱45克。"},{icon:"🍋",title:"雪克杯",desc:"中杯加标准糖浆15，大杯加标准糖25，其他糖量逐级减5。"},{icon:"🍋",title:"雪克杯",desc:"中杯加乌龙茶汤200毫升，大杯加乌龙茶汤300毫升，然后加冰块一起摇。"}]}
+  {id:"茉莉冰柠茶-cold",name:"茉莉冰柠茶",category:"手打柠檬茶系列",intro:"冷",icon:"🍋",steps:[{icon:"🍋",title:"雪克杯",desc:"中杯加4片柠檬，大杯加6片。"},{icon:"🍋",title:"雪克杯",desc:"用柠檬锤快速大力暴打柠檬。"},{icon:"🍋",title:"雪克杯",desc:"中杯加糖浆50，大杯加糖浆70，少冰补5，其他糖量逐级减5。"},{icon:"🍋",title:"雪克杯",desc:"中杯加茉莉茶汤200毫升，大杯加300毫升。"},{icon:"🍋",title:"雪克杯",desc:"加冰块，摇晃均匀。"}]}
+  {id:"啵啵奶茶-cold",name:"啵啵奶茶",category:"奶茶系列",intro:"冷",icon:"🧋",steps:[{icon:"🧋",title:"雪克杯",desc:"加入特调乳100毫升。"},{icon:"🧋",title:"雪克杯",desc:"加入标准糖浆30，其他糖量逐级减5。"},{icon:"🧋",title:"雪克杯",desc:"加红茶200毫升，然后加冰块一起摇。"}]}
+  {id:"啵啵奶茶-hot",name:"啵啵奶茶",category:"奶茶系列",intro:"热",icon:"🧋",steps:[{icon:"🧋",title:"雪克杯",desc:"加入特调乳100毫升。"},{icon:"🧋",title:"雪克杯",desc:"加入标准糖浆30，其他糖量逐级减5。"},{icon:"🧋",title:"雪克杯",desc:"加红茶200毫升，然后蒸汽加热至55度。"}]}
+  {id:"美式咖啡-cold",name:"美式咖啡",category:"咖啡系列",intro:"冷",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液备用。"}]}
+  {id:"美式咖啡-hot",name:"美式咖啡",category:"咖啡系列",intro:"热",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液备用。"}]}
+  {id:"拿铁-cold",name:"拿铁",category:"咖啡系列",intro:"冰",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液备用。"}]}
+  {id:"拿铁-hot",name:"拿铁",category:"咖啡系列",intro:"热",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液备用。"}]}
+  {id:"生椰拿铁-cold",name:"生椰拿铁",category:"咖啡系列",intro:"冷",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液备用。"}]}
+  {id:"生椰拿铁-hot",name:"生椰拿铁",category:"咖啡系列",intro:"热",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液备用。"}]}
+  {id:"焦糖拿铁-cold",name:"焦糖拿铁",category:"咖啡系列",intro:"冷",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液。"},{icon:"☕",title:"咖啡机",desc:"咖啡液加入标准焦糖浆15，半糖10，搅匀备用。"}]}
+  {id:"焦糖拿铁-hot",name:"焦糖拿铁",category:"咖啡系列",intro:"热",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液。"},{icon:"☕",title:"咖啡机",desc:"咖啡液加入标准焦糖浆15，半糖10，搅匀备用。"}]}
+  {id:"香草拿铁-cold",name:"香草拿铁",category:"咖啡系列",intro:"冷",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液。"},{icon:"☕",title:"咖啡机",desc:"咖啡液加入标准香草糖浆15，半糖10，搅匀备用。"}]}
+  {id:"香草拿铁-hot",name:"香草拿铁",category:"咖啡系列",intro:"热",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液。"},{icon:"☕",title:"咖啡机",desc:"咖啡液加入标准香草糖浆15，半糖10，搅匀备用。"}]}
+  {id:"香橙美式-cold",name:"香橙美式",category:"咖啡系列",intro:"冷",icon:"☕",steps:[{icon:"☕",title:"咖啡机",desc:"研磨18克咖啡粉，萃取60毫升咖啡液备用。"}]}
+  {id:"巧克力拿铁-cold",name:"巧克力拿铁",category:"无咖啡因拿铁系列",intro:"冷",icon:"🥛",steps:[{icon:"🥛",title:"量杯",desc:"中杯加20克巧克力酱，50毫升热水，搅匀。大杯加30克巧克力酱，75毫升热水，搅匀。"}]}
+  {id:"巧克力拿铁-hot",name:"巧克力拿铁",category:"无咖啡因拿铁系列",intro:"热",icon:"🥛",steps:[{icon:"🥛",title:"量杯",desc:"加20克巧克力酱，50毫升热水，搅匀。大杯加30克巧克力酱，75毫升热水，搅匀。"}]}
+  {id:"抹茶拿铁-cold",name:"抹茶拿铁",category:"无咖啡因拿铁系列",intro:"冷",icon:"🥛",steps:[{icon:"🥛",title:"量杯",desc:"加1.5勺抹茶粉，50毫升热水，搅匀。大杯加2勺抹茶粉，66毫升热水，搅匀。"}]}
+  {id:"抹茶拿铁-hot",name:"抹茶拿铁",category:"无咖啡因拿铁系列",intro:"热",icon:"🥛",steps:[{icon:"🥛",title:"量杯",desc:"加1.5勺抹茶粉，50毫升热水，搅匀。大杯加2勺抹茶粉，66毫升热水，搅匀。"}]}
 ];
-
 const ICONS = ["🧋","🍵","🥤","🥛","🍯","🧊","🫙","🍠","🥭","🥥","🍇","🫧","🍮","🧃","☕","🫖","🍶","🧉","🍋","🫗"];
 
 // ====== State ======
